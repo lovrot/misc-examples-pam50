@@ -1,0 +1,192 @@
+---
+title: "Example: PAM50 in the Mainz dataset"
+author: "John Lövrot"
+date: "`r format(Sys.Date(), format='%B %d, %Y')`"
+output: rmarkdown::tufte_handout
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-', 
+    echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+```{r load_project}
+setwd("..")
+ProjectTemplate::reload.project()
+setwd("reports")
+```
+
+```{r settings}
+theme_set(theme_bw())
+
+col4 <- rev(RColorBrewer::brewer.pal(4, "RdYlBu"))
+names(col4) <- paste0("Q", 1:4)
+
+options(xtable.comment=FALSE)
+options(xtable.booktabs=TRUE)
+options(xtable.size="footnotesize")
+```
+
+Illustrative cluster heatmap
+----------------------------
+
+```{r, fig.width=8, fig.height=9, fig.cap="Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: Proliferation index; ER: Estrogen receptor."}
+data("pam50", package="genefu")
+eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
+eset50 <- genefilter::featureFilter(eset50)
+featureNames(eset50) <- fData(eset50)$symbol
+
+## Derive relative expression
+exprs(eset50) <- sweep(exprs(eset50), 1, apply(exprs(eset50), 1, "median"))
+
+fData(eset50)$PAM50PROLIF <- fData(eset50)$entrezid %in% Nielsen10CCRTabS1$entrezid
+
+fig <- annHeatmap2(
+    exprs(eset50),
+    dendrogram=list(
+        Col=list(clustfun=hclust_avl, distfun=dist_cor, status="yes", lwd=1), 
+        Row=list(clustfun=hclust_avl, distfun=dist_cor, status="hide")), 
+    annotation=list(
+        Col=list(data=pData(eset50)[, c("erstat", "PAM50PROLIF", "subtypecd")], inclRef=TRUE), 
+        Row=list(data=fData(eset50)[, "PAM50PROLIF", drop=FALSE], inclRef=FALSE)), 
+    labels=list(
+        Col=list(labels=NULL),
+        Row=list(cex=0.75)),
+    breaks=atanbreaks(eset50, trg=4, n=128),
+    col=cyanblackyellow,
+    legend=TRUE, 
+    scale="none")
+plot(fig, widths=c(1, 5, 0.5), heights=c(1.5, 5, 2))
+```
+
+\clearpage
+
+Assocations with outcome
+========================
+
+Illustration of excess distant metastasis plots
+-----------------------------------------------
+
+The association between the PAM50 proliferation index and outcome is illustrated using exploratory plots of excess distant metastases. 
+A smoother with exploratory confidence bands is superimposed in the scatterplot and the contributions from individual patients are shown with circles. 
+The shape of the smoother indicates the form of an association between the index and risk of distant metastasis. 
+Mathematically, the excess distant metastases are martingale residuals in a null Cox model. 
+Corresponding plot for PAM50 intrinsic subtypes are added for comparison.
+
+```{r, fig.width=8, fig.height=4, fig.cap="Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
+ylim0 <- range(mainz$excessdm)
+
+gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
+    geom_point(shape=1, aes(col=cat4(PAM50PROLIF))) + 
+    geom_smooth(method="loess", span=0.75, col="black") +
+    ylim(ylim0) +
+    scale_colour_manual(values=col4, guide=FALSE) + 
+    labs(x="Proliferation index", y="Excess distant metastases")
+
+gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=excessdm)) + 
+    geom_point(shape=1) + 
+    stat_summary(fun.data="mean_cl_normal", size=1.5, aes(col=subtypecd)) +
+    scale_colour_manual(values=colCGANsubtypecd, guide=FALSE) + 
+    labs(x="Intrinsic subtype", y="Excess distant metastases")
+
+cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
+```
+
+```{r, fig.width=8, fig.height=5.5, fig.cap="Corresponding Kaplan-Meier curves. Proliferation index categorised into quarters."}
+layout(matrix(1:2, nrow=1, byrow=TRUE))
+
+survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
+    data=pData(mainz), 
+    col=col4, lwd=2, xmax=7, 
+    stitle="Proliferation index", main="A",
+    xlab="Time (years)", ylab="Distant metastasis-free survival")
+
+survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd, 
+    data=pData(mainz), 
+    col=colCGANsubtypecd[levels(mainz$subtypecd)], lwd=2, xmax=7, 
+    stitle="Intrinsic subtype", main="B",
+    xlab="Time (years)", ylab="Distant metastasis-free survival")
+
+```
+
+\clearpage
+
+Added value of ROR score in ER+ patients
+----------------------------------------
+
+Initial exploratory plots:
+
+```{r, fig.width=8, fig.height=4, fig.cap="Excess distant metastases in relation to (A) Nottingham prognostic index and (B) PAM50 risk of reccurence score in ER+ patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+ylim0 <- range(mainz$excessdm)
+
+gg1 <- ggplot(
+    data=subset(pData(mainz), erstat %in% "ER+"), 
+    aes(x=NPI, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", span=1, col="red") +
+    facet_grid(. ~ erstat) +
+    ylim(ylim0) +
+    labs(y="Excess distant metastases")
+
+gg2 <- ggplot(
+    data=subset(pData(mainz), erstat %in% "ER+"), 
+    aes(x=RORS, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", col="red") +
+    facet_grid(. ~ erstat) +
+    ylim(ylim0) +
+    labs(y="Excess distant metastases")
+
+cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
+```
+
+Formal statistical inference:
+
+```{r}
+model1 <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
+    data=subset(pData(mainz), erstat %in% "ER+"))
+model2 <- coxph(Surv(survdmtm, dmstat) ~ RORS, 
+    data=subset(pData(mainz), erstat %in% "ER+"))
+model3 <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS, 
+    data=subset(pData(mainz), erstat %in% "ER+"))
+
+## Concordance index (C-index)
+cindex_df <- data.frame(
+    marker=factor(c("NPI", "RORS", "NPI+RORS"), 
+        levels=c("NPI", "RORS", "NPI+RORS")), 
+    cindex=c(
+        summary(model1)$concordance["concordance.concordant"], 
+        summary(model2)$concordance["concordance.concordant"], 
+        summary(model3)$concordance["concordance.concordant"]))
+
+## Likelihood ratio tests
+lr_test_df <- rbind(
+    cbind(
+        data.frame(Comparison="NPI+RORS v RORS"), 
+        as.data.frame(anova(model2, model3)[2, 2:4])), 
+    cbind(
+        data.frame(Comparison="NPI+RORS v NPI"), 
+        as.data.frame(anova(model1, model3)[2, 2:4])))
+```
+
+```{r, results="asis"}
+xtab <- xtable(lr_test_df, digits=3)
+caption(xtab) <- "Likelihood ratio (LR) tests to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in ER+ patients."
+print(xtab, include.rownames=FALSE)
+```
+
+\vspace{5cm}
+
+```{r, fig.width=4, fig.height=4, fig.margin=TRUE, fig.cap="Concordance indices to assess the added value of ROR-S beyond NPI in ER+ patients."}
+
+colmarker <- colJCO
+names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
+
+gg <- ggplot(data=cindex_df, aes(x=marker, y=cindex, fill=marker)) +
+    geom_bar(stat="identity", position="dodge") +
+    coord_cartesian(ylim=c(0.5, 0.8)) +
+    scale_fill_manual(values=colmarker, guide=FALSE) +
+    labs(x="", y="C index")
+
+plot(gg)
+```
