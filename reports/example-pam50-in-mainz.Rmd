@@ -1,6 +1,7 @@
 ---
 title: "Example: PAM50 subtypes in the Mainz dataset"
 author: "John Lövrot"
+license: MIT
 date: "`r format(Sys.Date(), format='%B %d, %Y')`"
 output: rmarkdown::tufte_handout
 ---
