@@ -5,7 +5,7 @@ recursive_loading: FALSE
 munging: FALSE
 logging: FALSE
 load_libraries: TRUE
-libraries: Biobase, BiocGenerics, hgu133a.db, genefilter, Heatplus,
+libraries: Biobase, BiocGenerics, GEOquery, hgu133a.db, genefilter, Heatplus,
     ggplot2, xtable, survival, survplot
 as_factors: FALSE
 data_tables: FALSE
