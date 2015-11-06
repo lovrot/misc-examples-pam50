@@ -179,7 +179,7 @@ print(xtab, include.rownames=FALSE)
 
 ```{r, fig.width=4, fig.height=4, fig.margin=TRUE, fig.cap="Concordance indices to assess the added value of ROR-S beyond NPI in ER+ patients."}
 
-colmarker <- colJCO
+colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
 
 gg <- ggplot(data=cindex_df, aes(x=marker, y=cindex, fill=marker)) +
