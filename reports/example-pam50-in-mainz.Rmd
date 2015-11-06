@@ -1,5 +1,5 @@
 ---
-title: "Example: PAM50 in the Mainz dataset"
+title: "Example: PAM50 subtypes in the Mainz dataset"
 author: "John Lövrot"
 date: "`r format(Sys.Date(), format='%B %d, %Y')`"
 output: rmarkdown::tufte_handout

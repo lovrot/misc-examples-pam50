@@ -8,4 +8,3 @@ Then
 
 1. Run src/cache-objects.R
 2. Knit reports/example-pam50-in-mainz.Rmd
-

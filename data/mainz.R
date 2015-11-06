@@ -1,5 +1,5 @@
 ## Author(s):
-## John Lövrot <john.lovrot@ki.se>
+## John Lövrot (orcid.org/0000-0002-9339-8059)
 ##
 ## Licence: CC BY 4.0
 ## https://creativecommons.org/licenses/by/4.0/
