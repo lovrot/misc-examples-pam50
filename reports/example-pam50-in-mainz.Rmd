@@ -155,6 +155,8 @@ cowplot::ggdraw() +
     cowplot::draw_plot_label(c("A", "B", "C"), x=c(0, 1/4, 0), y=c(1, 1, 1/2))
 ```
 
+See, for example, the section "Prognostic Signatures Within Intrinsic Subtypes" the review Ades14JCO (PMID [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)).
+
 \clearpage
 
 Added value of ROR score in ER+ patients
