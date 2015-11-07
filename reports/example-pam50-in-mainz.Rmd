@@ -93,7 +93,7 @@ gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) +
     labs(x="Proliferation index", y="Excess distant metastases")
 
 gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=excessdm)) + 
-    geom_point(shape=1) + 
+    geom_point(shape=1, position=position_jitter(w=0.1, h=0)) + 
     stat_summary(fun.data="mean_cl_normal", size=1.5, aes(col=subtypecd)) +
     scale_colour_manual(values=colCGANsubtypecd, guide=FALSE) + 
     labs(x="Intrinsic subtype", y="Excess distant metastases")
