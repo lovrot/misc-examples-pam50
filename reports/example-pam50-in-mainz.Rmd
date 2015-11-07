@@ -209,7 +209,7 @@ cowplot::plot_grid(gg1, gg2, gg3, gg4,
 
 \clearpage
 
-Formal statistical inference:
+Formal statistical inference, compare with, for example, Dowsett13JCO (PMID [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)):
 
 ```{r}
 model1a <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
