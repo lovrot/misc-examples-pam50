@@ -1,7 +1,7 @@
 ---
 title: "Example: PAM50 subtypes in the Mainz dataset"
 author: "John Lövrot"
-license: MIT
+license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format='%B %d, %Y')`"
 output: rmarkdown::tufte_handout
 ---
@@ -26,6 +26,14 @@ names(col4) <- paste0("Q", 1:4)
 options(xtable.comment=FALSE)
 options(xtable.booktabs=TRUE)
 options(xtable.size="footnotesize")
+```
+
+```{r, additional_munging}
+mainz$trigrp <- with(pData(mainz), factor(
+    ifelse(erstat %in% "ER+" & subtypecd != "H2", "ER+/not H2", 
+    ifelse(erstat %in% "ER-" & subtypecd != "H2", "ER-/not H2", 
+    ifelse(subtypecd == "H2", "H2", NA))), 
+    levels=c("ER+/not H2", "H2", "ER-/not H2")))
 ```
 
 Illustrative cluster heatmap
@@ -85,7 +93,7 @@ gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) +
     labs(x="Proliferation index", y="Excess distant metastases")
 
 gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=excessdm)) + 
-    geom_point(shape=1) + 
+    geom_point(shape=1, position=position_jitter(w=0.1, h=0)) + 
     stat_summary(fun.data="mean_cl_normal", size=1.5, aes(col=subtypecd)) +
     scale_colour_manual(values=colCGANsubtypecd, guide=FALSE) + 
     labs(x="Intrinsic subtype", y="Excess distant metastases")
@@ -112,12 +120,51 @@ survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd,
 
 \clearpage
 
+Proliferation, intrinsic subtypes and outcome
+---------------------------------------------
+
+```{r, fig.width=12, fig.height=6, fig.fullwidth=TRUE, fig.cap="Proliferation, intrinsic subtype and outcome."}
+ylim0 <- range(mainz$excessdm)
+
+gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", span=0.75, col="black") +
+    ylim(ylim0) +
+    labs(x="Proliferation index", y="Excess distant metastases")
+
+gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=PAM50PROLIF)) + 
+    geom_boxplot(aes(fill=subtypecd), outlier.colour="transparent") + 
+    geom_point(shape=1, position=position_jitter(w=0.1, h=0)) + 
+    scale_x_discrete(limits=rev(levels(mainz$subtypecd))) +
+    scale_fill_manual(values=colCGANsubtypecd, guide=FALSE) + 
+    labs(x="Intrinsic subtype", y="Proliferation index") + 
+    coord_flip()
+
+gg3 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="lm", aes(col=subtypecd)) +
+    ylim(ylim0) +
+    facet_wrap(~ subtype) +
+    scale_colour_manual(values=colCGANsubtypecd, guide=FALSE) + 
+    labs(x="Proliferation index", y="Excess distant metastases")
+
+cowplot::ggdraw() +
+    cowplot::draw_plot(gg1, 0, 1/2, 1/4, 1/2) +
+    cowplot::draw_plot(gg2, 0, 0, 1/4, 1/2) +
+    cowplot::draw_plot(gg3, 1/4, 0, 3/4, 1) +
+    cowplot::draw_plot_label(c("A", "B", "C"), x=c(0, 1/4, 0), y=c(1, 1, 1/2))
+```
+
+See, for example, the section "Prognostic Signatures Within Intrinsic Subtypes" the review Ades14JCO (PMID [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)).
+
+\clearpage
+
 Added value of ROR score in ER+ patients
 ----------------------------------------
 
 Initial exploratory plots:
 
-```{r, fig.width=8, fig.height=4, fig.cap="Excess distant metastases in relation to (A) Nottingham prognostic index and (B) PAM50 risk of reccurence score in ER+ patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+```{r, fig.width=8, fig.height=8, fig.cap="Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(
@@ -130,6 +177,15 @@ gg1 <- ggplot(
     labs(y="Excess distant metastases")
 
 gg2 <- ggplot(
+    data=subset(pData(mainz), trigrp %in% "ER+/not H2"), 
+    aes(x=NPI, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", span=1, col="red") +
+    facet_grid(. ~ trigrp) +
+    ylim(ylim0) +
+    labs(y="Excess distant metastases")
+
+gg3 <- ggplot(
     data=subset(pData(mainz), erstat %in% "ER+"), 
     aes(x=RORS, y=excessdm)) + 
     geom_point(shape=1) + 
@@ -138,56 +194,102 @@ gg2 <- ggplot(
     ylim(ylim0) +
     labs(y="Excess distant metastases")
 
-cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
+gg4 <- ggplot(
+    data=subset(pData(mainz), trigrp %in% "ER+/not H2"), 
+    aes(x=RORS, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", col="red") +
+    facet_grid(. ~ trigrp) +
+    ylim(ylim0) +
+    labs(y="Excess distant metastases")
+
+cowplot::plot_grid(gg1, gg2, gg3, gg4, 
+    labels=c("A", "B", "C", "D"), nrow=2)
 ```
 
-Formal statistical inference:
+\clearpage
+
+Formal statistical inference, compare with, for example, Dowsett13JCO (PMID [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)):
 
 ```{r}
-model1 <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
+model1a <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
     data=subset(pData(mainz), erstat %in% "ER+"))
-model2 <- coxph(Surv(survdmtm, dmstat) ~ RORS, 
+model2a <- coxph(Surv(survdmtm, dmstat) ~ RORS, 
     data=subset(pData(mainz), erstat %in% "ER+"))
-model3 <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS, 
+model3a <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS, 
     data=subset(pData(mainz), erstat %in% "ER+"))
+
+model1b <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
+    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
+model2b <- coxph(Surv(survdmtm, dmstat) ~ RORS, 
+    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
+model3b <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS, 
+    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
 
 ## Concordance index (C-index)
 cindex_df <- data.frame(
-    marker=factor(c("NPI", "RORS", "NPI+RORS"), 
+    subpop=factor(rep(c("ER+", "ER+/not H2"), each=3), 
+        levels=c("ER+", "ER+/not H2")), 
+    marker=factor(rep(c("NPI", "RORS", "NPI+RORS"), times=2), 
         levels=c("NPI", "RORS", "NPI+RORS")), 
     cindex=c(
-        summary(model1)$concordance["concordance.concordant"], 
-        summary(model2)$concordance["concordance.concordant"], 
-        summary(model3)$concordance["concordance.concordant"]))
+        summary(model1a)$concordance["concordance.concordant"], 
+        summary(model2a)$concordance["concordance.concordant"], 
+        summary(model3a)$concordance["concordance.concordant"],
+        summary(model1b)$concordance["concordance.concordant"], 
+        summary(model2b)$concordance["concordance.concordant"], 
+        summary(model3b)$concordance["concordance.concordant"]))
 
 ## Likelihood ratio tests
 lr_test_df <- rbind(
     cbind(
-        data.frame(Comparison="NPI+RORS v RORS"), 
-        as.data.frame(anova(model2, model3)[2, 2:4])), 
+        data.frame(
+            Population=c("ER+"), 
+            Comparison="NPI+RORS v RORS"), 
+        as.data.frame(anova(model2a, model3a)[2, 2:4])), 
     cbind(
-        data.frame(Comparison="NPI+RORS v NPI"), 
-        as.data.frame(anova(model1, model3)[2, 2:4])))
+        data.frame(
+            Population=c("ER+"), 
+            Comparison="NPI+RORS v NPI"), 
+        as.data.frame(anova(model1a, model3a)[2, 2:4])),
+    cbind(
+        data.frame(
+            Population=c("ER+/not H2"), 
+            Comparison="NPI+RORS v RORS"), 
+        as.data.frame(anova(model2b, model3b)[2, 2:4])), 
+    cbind(
+        data.frame(
+            Population=c("ER+/not H2"), 
+            Comparison="NPI+RORS v NPI"), 
+        as.data.frame(anova(model1b, model3b)[2, 2:4])))
 ```
 
-```{r, results="asis"}
-xtab <- xtable(lr_test_df, digits=3)
-caption(xtab) <- "Likelihood ratio tests to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in ER+ patients."
-print(xtab, include.rownames=FALSE)
-```
-
-\vspace{5cm}
-
-```{r, fig.width=4, fig.height=4, fig.margin=TRUE, fig.cap="Concordance indices to assess the added value of ROR-S beyond NPI in ER+ patients."}
+```{r, fig.width=8, fig.height=4, fig.margin=FALSE, fig.cap="Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
 
 colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
 
-gg <- ggplot(data=cindex_df, aes(x=marker, y=cindex, fill=marker)) +
+gg1 <- ggplot(data=subset(cindex_df, subpop == "ER+"), 
+    aes(x=marker, y=cindex, fill=marker)) +
     geom_bar(stat="identity", position="dodge") +
     coord_cartesian(ylim=c(0.5, 0.8)) +
+    facet_grid(. ~ subpop) +
     scale_fill_manual(values=colmarker, guide=FALSE) +
     labs(x="", y="C index")
 
-plot(gg)
+gg2 <- ggplot(data=subset(cindex_df, subpop == "ER+/not H2"), 
+    aes(x=marker, y=cindex, fill=marker)) +
+    geom_bar(stat="identity", position="dodge") +
+    coord_cartesian(ylim=c(0.5, 0.8)) +
+    facet_grid(. ~ subpop) +
+    scale_fill_manual(values=colmarker, guide=FALSE) +
+    labs(x="", y="C index")
+
+cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
+```
+
+```{r, results="asis"}
+xtab <- xtable(lr_test_df, digits=3)
+caption(xtab) <- "Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients."
+print(xtab, include.rownames=FALSE)
 ```

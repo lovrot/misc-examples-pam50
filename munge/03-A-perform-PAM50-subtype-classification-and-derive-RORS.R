@@ -11,7 +11,8 @@
 ## Author(s):
 ## John Lövrot (orcid.org/0000-0002-9339-8059)
 ##
-## Licence: MIT
+## Licence: CC BY 4.0
+## https://creativecommons.org/licenses/by/4.0/
 
 ## Assemble PAM50centroids object
 data("pam50", package="genefu")
