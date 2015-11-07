@@ -120,6 +120,43 @@ survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd,
 
 \clearpage
 
+Proliferation, intrinsic subtypes and outcome
+---------------------------------------------
+
+```{r, fig.width=12, fig.height=6, fig.fullwidth=TRUE, fig.cap="Proliferation, intrinsic subtype and outcome."}
+ylim0 <- range(mainz$excessdm)
+
+gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="loess", span=0.75, col="black") +
+    ylim(ylim0) +
+    labs(x="Proliferation index", y="Excess distant metastases")
+
+gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=PAM50PROLIF)) + 
+    geom_boxplot(aes(fill=subtypecd), outlier.colour="transparent") + 
+    geom_point(shape=1, position=position_jitter(w=0.1, h=0)) + 
+    scale_x_discrete(limits=rev(levels(mainz$subtypecd))) +
+    scale_fill_manual(values=colCGANsubtypecd, guide=FALSE) + 
+    labs(x="Intrinsic subtype", y="Proliferation index") + 
+    coord_flip()
+
+gg3 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
+    geom_point(shape=1) + 
+    geom_smooth(method="lm", aes(col=subtypecd)) +
+    ylim(ylim0) +
+    facet_wrap(~ subtype) +
+    scale_colour_manual(values=colCGANsubtypecd, guide=FALSE) + 
+    labs(x="Proliferation index", y="Excess distant metastases")
+
+cowplot::ggdraw() +
+    cowplot::draw_plot(gg1, 0, 1/2, 1/4, 1/2) +
+    cowplot::draw_plot(gg2, 0, 0, 1/4, 1/2) +
+    cowplot::draw_plot(gg3, 1/4, 0, 3/4, 1) +
+    cowplot::draw_plot_label(c("A", "B", "C"), x=c(0, 1/4, 0), y=c(1, 1, 1/2))
+```
+
+\clearpage
+
 Added value of ROR score in ER+ patients
 ----------------------------------------
 
