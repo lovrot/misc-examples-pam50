@@ -36,6 +36,9 @@ mainz$trigrp <- with(pData(mainz), factor(
     levels=c("ER+/not H2", "H2", "ER-/not H2")))
 ```
 
+Initial data explorations
+=========================
+
 Illustrative cluster heatmap
 ----------------------------
 
