@@ -5,6 +5,7 @@
 ## https://creativecommons.org/licenses/by/4.0/
 
 unlink(list.files(path="cache", pattern="*", full.names=TRUE))  # clear cache
+options(download.file.method="libcurl")
 ProjectTemplate::reload.project(list(data_loading=TRUE, munging=TRUE))
 
 ProjectTemplate::cache("varnamconv")
