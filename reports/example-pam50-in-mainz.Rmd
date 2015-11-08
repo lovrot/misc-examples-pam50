@@ -30,9 +30,9 @@ options(xtable.size="footnotesize")
 
 ```{r, additional_munging}
 mainz$trigrp <- with(pData(mainz), factor(
-    ifelse(erstat %in% "ER+" & subtypecd != "H2", "ER+/not H2", 
-    ifelse(erstat %in% "ER-" & subtypecd != "H2", "ER-/not H2", 
-    ifelse(subtypecd == "H2", "H2", NA))), 
+    ifelse(erstat %in% "ER+" & !(subtypecd %in% "H2"), "ER+/not H2", 
+        ifelse(erstat %in% "ER-" & !(subtypecd %in% "H2"), "ER-/not H2", 
+            ifelse(subtypecd %in% "H2", "H2", NA))), 
     levels=c("ER+/not H2", "H2", "ER-/not H2")))
 ```
 
@@ -223,11 +223,11 @@ model3a <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS,
     data=subset(pData(mainz), erstat %in% "ER+"))
 
 model1b <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
-    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
+    data=subset(pData(mainz), trigrp %in% "ER+/not H2"))
 model2b <- coxph(Surv(survdmtm, dmstat) ~ RORS, 
-    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
+    data=subset(pData(mainz), trigrp %in% "ER+/not H2"))
 model3b <- coxph(Surv(survdmtm, dmstat) ~ NPI + RORS, 
-    data=subset(pData(mainz), erstat %in% "ER+" & subtypecd != "H2"))
+    data=subset(pData(mainz), trigrp %in% "ER+/not H2"))
 
 ## Concordance index (C-index)
 cindex_df <- data.frame(
