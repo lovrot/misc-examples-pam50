@@ -64,7 +64,7 @@ fig <- annHeatmap2(
     labels=list(
         Col=list(labels=NULL),
         Row=list(cex=0.75)),
-    breaks=atanbreaks(eset50, trg=4, n=128),
+    breaks=atanbreaks(eset50, trg=4),
     col=cyanblackyellow,
     legend=TRUE, 
     scale="none")

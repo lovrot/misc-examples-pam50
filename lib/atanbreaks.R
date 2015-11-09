@@ -4,23 +4,20 @@
 ## License: CC BY 4.0
 ## https://creativecommons.org/licenses/by/4.0/
 
-atanbreaks <- function(x, n=10, trg=2) {
+atanbreaks <- function(x, n=128, trg=2) {
     if (is(x, "numeric")) {
         ymin <- -x
         ymax <- x
+    } else if (is(x, "matrix")) {
+        ymin <- min(x)
+        ymax <- max(x)
+    } else if (is(x, "ExpressionSet")) {
+        ymin <- min(exprs(x))
+        ymax <- max(exprs(x))
     } else {
-        if (is(x, "matrix")) {
-            ymin <- min(x)
-            ymax <- max(x)
-        } else {
-            if (is(x, "ExpressionSet")) {
-                ymin <- min(exprs(x))
-                ymax <- max(exprs(x))
-            } else {
-                stop(paste("atanbreaks not implemented for class", class(x)))
-            }
-        }
+        stop(paste("atanbreaks not implemented for class", class(x)))
     }
+
     scale_atan <- function(n, ymin, ymax, trg) {
         ymin2 <- ymin - 0.05*(ymax - ymin)
         ymax2 <- ymax + 0.05*(ymax - ymin)
