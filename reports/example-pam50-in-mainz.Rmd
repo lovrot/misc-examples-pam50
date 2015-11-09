@@ -76,7 +76,7 @@ plot(fig, widths=c(1, 5, 0.5), heights=c(1.5, 5, 2))
 Assocations with outcome
 ========================
 
-Illustration of excess distant metastasis plots
+Illustration of excess distant metastases plots
 -----------------------------------------------
 
 The association between the PAM50 proliferation index and outcome is illustrated using exploratory plots of excess distant metastases. 
