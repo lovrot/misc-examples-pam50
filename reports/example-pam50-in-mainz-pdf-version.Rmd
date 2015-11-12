@@ -7,7 +7,7 @@ output: rmarkdown::tufte_handout
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-', 
+knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-pdf-', 
     echo=FALSE, warning=FALSE, message=FALSE)
 ```
 
