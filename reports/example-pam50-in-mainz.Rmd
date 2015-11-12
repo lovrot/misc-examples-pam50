@@ -298,3 +298,12 @@ xtab <- xtable(lr_test_df, digits=3)
 caption(xtab) <- "Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients."
 print(xtab, include.rownames=FALSE)
 ```
+
+\newpage
+
+R session information
+=====================
+
+```{r, results="asis"}
+toLatex(sessionInfo(), locale=FALSE)
+```
