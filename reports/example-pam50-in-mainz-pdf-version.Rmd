@@ -7,13 +7,15 @@ output: rmarkdown::tufte_handout
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-', 
+knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-pdf-', 
     echo=FALSE, warning=FALSE, message=FALSE)
 ```
 
 ```{r load_project}
 setwd("..")
-ProjectTemplate::reload.project()
+ProjectTemplate::reload.project(list(data_loading=FALSE, munging=FALSE, 
+    cache_loading=TRUE))  # during development
+# ProjectTemplate::reload.project()
 setwd("reports")
 ```
 
@@ -296,3 +298,21 @@ xtab <- xtable(lr_test_df, digits=3)
 caption(xtab) <- "Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients."
 print(xtab, include.rownames=FALSE)
 ```
+
+\newpage
+
+R session information
+=====================
+
+```{r, results="asis"}
+toLatex(sessionInfo(), locale=FALSE)
+```
+
+- - -
+
+&copy; 2015 John Lövrot.
+This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+
+The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).
+Version `r format(read.dcf("../description.dcf")[1, "version"])`
+
