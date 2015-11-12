@@ -10,3 +10,8 @@ Then
 
 1. Run src/cache-objects.R
 2. Knit reports/example-pam50-in-mainz.Rmd
+
+- - -
+
+Copyright (c) 2015 John Lövrot.  
+This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
