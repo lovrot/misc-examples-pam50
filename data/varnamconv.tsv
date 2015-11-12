@@ -1,0 +1,75 @@
+variableName	labelDescription	type	RClass	controlledTermsOrFormat	reference	comment
+studyid	Study Identifier	Char	character		SDTM 2.2.4	
+siteid	Study Site Identifier	Char	character			
+usubjid	Unique Subject Identifier	Char	character		SDTM 2.2.4	
+subjid	Subject Identifier for the Study	Char	character			
+brthdtc	Date of Birth - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	
+brthdtm	Date of Birth	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+age	Age at Reference Date	Num 	integer		SDSIG 5.1.1	
+ageu	Age Units	Char	character	decades, years, months, days	SDSIG 5.1.1	
+agerfdt	Reference Date for Age	Char	character	ISO 8601, vaiable name, or free text (e.g. 'Diagnosis')		'rf' from CDISC naming fragments; 'dt' see SDSIG 4.1.4.2
+sex	Sex	Char	factor	M, F, U	SDSIG 5.1.1	
+diagdtc	Date of Diagnosis - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+diagdtm	Date of Diagnosis	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+surgdtc	Date of Surgery - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+surgdtm	Date of Surgery	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+tumsize	Tumour Size	Num 	numeric			
+tumsizeu	Tumour Size Units	Char	character	cm, mm		'u' from CDISC naming fragments
+lnstat	Lymph Node Status	Char	factor	LN-, LN+		'stat' from CDISC naming fragments
+histgrn	Histological Grade, Elston-Ellis Score, Numeric Total Grade	Num 	integer	1, 2, 3		'gr' and 'n' from CDISC naming fragments
+histgr	Histological Grade, Elston-Ellis Score, Total Grade	Char	factor	G1, G2, G3		'gr' from CDISC naming fragments
+erstat	Oestrogen Receptor Status	Char	factor	ER-, ER+		'stat' from CDISC naming fragments
+erval	Oestrogen Receptor Value	Num 	numeric			'val' from CDISC naming fragments
+ervalu	Oestrogen Receptor Value Units	Char	character			'val' and 'u' from CDISC naming fragments
+prstat	Progesterone Receptor Status	Char	factor	PR-, PR+		'stat' from CDISC naming fragments
+prval	Progesterone Receptor Value	Num 	numeric			'val' from CDISC naming fragments
+prvalu	Progesterone Value Units	Char	character			'val' and 'u' from CDISC naming fragments
+her2stat	HER2/neu Status	Char	factor	HER2-, HER2+		'stat' from CDISC naming fragments
+her2val	HER2/neu Value	Num 	numeric			'val' from CDISC naming fragments
+her2mth	HER2/neu Method	Char	character			'mth' from CDISC naming fragments
+subtype	Molecular Intrinsic Subtype	Char	factor	Luminal A, Luminal B, HER2-enriched, Claudin-low, Basal-like, Normal Breast-like, No subtype		Terms inspired by PMID 21147047, Fig 1
+subtypecd	Molecular Intrinsic Subtype Code	Char	factor	LA, LB, H2, CL, BL, NBL, none		Terms inspired by PMID 21147047, Fig 1
+visitnum	Visit Number	Num 	integer		SDSIG 7.8; SDSIG 4.1.4.5	
+visit	Visit Name	Char 	character		SDSIG 7.8; SDSIG 4.1.4.5	
+visitdy	Planned Study Day of Visit	Num 	integer		SDSIG 7.8; SDSIG 4.1.4.5	
+tptnum	Planned Time Point Number	Num 	integer			
+tpt	Planned Time Point Name	Char 	character			
+armcd	Planned Arm Code	Char	character		SDSIG 5.1.1	
+arm	Description of Planned Arm	Char	factor		SDSIG 5.1.1	
+trtcd	Treatment Code	Char 	character			See SDSIG 5.1.1
+trt	Treatment Name	Char 	factor			inspired by cmtrt and extrt in CDISC SDTM
+trtgrp	Treatment Group	Char 	character			See SDSIG 5.1.1
+sustdtc	Start Date of Substance Use - Character 	Char	character	ISO 8601	SDSIG 6.1.3; SDSIG 4.1.4.3	
+sustdtm	Start Date of Substance Use 	Num 	Date	R's Date class		
+bioploc	Location of Biopsy	Char	character			'loc' from CDISC naming fragments
+biopdtc	Date of Biopsy - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+biopdtm	Date of Biopsy	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+assaynum	Assay Number	Num 	integer			'num' from CDISC naming fragments
+assayid	Assay Identifier	Char	character			'id' from CDISC naming fragments
+reldtc	Date of Relapse or Censoring - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+reldtm	Date of Relapse or Censoring	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+survreltm	Elapsed Time until Relapse or Censoring	Num 	numeric			
+survreltmu	Units of Elapsed Time until Relapse or Censoring	Char	character	decades, years, months, days		
+survrelrfdt	Reference Date for Elapsed Time until Relapse or Censoring	Char	character	ISO 8601, vaiable name, or free text (e.g. 'Diagnosis')		'rf' from CDISC naming fragments; 'dt' see SDSIG 4.1.4.2
+relstat	Breast Cancer Relapse Status Indicator	Num 	integer	0, 1		'stat' from CDISC naming fragments; status indicator values, 0 and 1, as in the function Surv in the R package survival
+dmdtc	Date of Distant Metastasis - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+dmdtm	Date of Distant Metastasis	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+survdmtm	Elapsed Time until Distant Metastasis or Cencoring	Num 	numeric			
+survdmtmu	Units of Elapsed Time until Distant Metastasis or Cencoring	Char	character	decades, years, months, days		
+survdmrfdt	Reference Date for Elapsed Time until Distant Metastasis or Censoring	Char	character	ISO 8601, vaiable name, or free text (e.g. 'Diagnosis')		'ref' from CDISC naming fragments; 'dt' see SDSIG 4.1.4.2
+dmstat	Distant Metastasis Status Indicator	Num 	integer	0, 1		'stat' from CDISC naming fragments; status indicator values, 0 and 1, as in the function Surv in the R package survival
+progdtc	Date of Progression - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dtc' from CDISC naming fragments
+progdtm	Date of Progression	Num 	Date	R's Date class	SDSIG 4.1.4.3	
+survprogtm	Elapsed Time until Progression or Cencoring	Num 	numeric			
+survprogtmu	Units of Elapsed Time until Progression or Cencoring	Char	character	decades, years, months, days		
+survprogrfdt	Reference Date for Elapsed Time until Progression or Censoring	Char	character	ISO 8601, vaiable name, or free text (e.g. 'Diagnosis')		'ref' from CDISC naming fragments; 'dt' see SDSIG 4.1.4.2
+progstat	Progression Status Indicator	Num 	integer	0, 1		'stat' from CDISC naming fragments; status indicator values, 0 and 1, as in the function Surv in the R package survival
+dthdtc	Date of Death or Censoring - Character	Char	character	ISO 8601	SDSIG 4.1.4.1 	'dth' and 'dtc' from CDISC naming fragments
+dthdtm	Date of Death or Censoring	Num 	Date	R's Date class	SDSIG 4.1.4.3	'dth' from CDISC naming fragments
+survdthtm	Elapsed Time until Death or Censoring	Num 	numeric			'dth' and 'dtc' from CDISC naming fragments
+survdthtmu	Units of Elapsed Time until Death or Censoring	Char	character	decades, years, months, days		'dth' and 'dtc' from CDISC naming fragments
+survdthrfdt	Reference Date for Elapsed Time until Death or Censoring	Char	character	ISO 8601, vaiable name, or free text (e.g. 'Diagnosis')		'dth', 'rf' from CDISC naming fragments; 'dt' see SDSIG 4.1.4.2
+dthcd	Death Code	Char	character			
+dthstat	Death from Any Reason	Num 	integer	0, 1		'dth', 'stat' from CDISC naming fragments; status indicator values, 0 and 1, as in the function Surv in the R package survival
+dthbcstat	Death due to Breast Cancer	Num 	integer	0, 1		'dth', 'stat' from CDISC naming fragments; status indicator values, 0 and 1, as in the function Surv in the R package survival
+com	Comment	Char	character			'com' from CDISC naming fragments
