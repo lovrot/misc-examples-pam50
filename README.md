@@ -9,7 +9,7 @@ The aims of this R code bundle are: (1) to show how one can use the [ProjectTemp
 Instructions
 ------------
 
-Make sure the packages listed in config/global.cdf are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/. Furthermore, the packages ProjectTemplate, rmarkdown, knitr, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
+Make sure the packages listed in config/global.cdf and their dependencies are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/. Furthermore, the packages ProjectTemplate, rmarkdown, knitr, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
 
 Then
 
