@@ -168,8 +168,9 @@ cowplot::ggdraw() +
 
 See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review Ades14JCO (PMID [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)).
 
-
 ### Added value of ROR score in ER+ patients
+
+One should judge a candidate biomarker by its ability to improve prognostic/predictive accuracy beyond known prognosicators/predictors, see, for example, the editorial by Kattan03JNCI (PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)).
 
 Initial exploratory plots:
 
