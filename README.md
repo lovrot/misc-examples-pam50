@@ -9,7 +9,7 @@ The aims of this R code bundle are: (1) to show how one can use the [ProjectTemp
 Instructions
 ------------
 
-Make sure the packages listed in config/global.cdf are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/. Furthermore, the packages ProjectTemplate, rmarkdown, knitr, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
+Make sure the packages listed in config/global.cdf and their dependencies are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/. Furthermore, the packages ProjectTemplate, rmarkdown, knitr, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
 
 Then
 
@@ -17,7 +17,7 @@ Then
 2. Knit reports/example-pam50-in-mainz-pdf-version.Rmd and/or  
    reports/example-pam50-in-mainz-html-version.Rmd
 
-The produced report (HTML version) can be viewed at [rpubs.com/lovrot/misc-examples-pam50](http://rpubs.com/lovrot/misc-examples-pam50).
+A generated report (HTML version) can be viewed at [rpubs.com/lovrot/misc-examples-pam50](http://rpubs.com/lovrot/misc-examples-pam50).
 
 - - -
 
