@@ -308,6 +308,34 @@ print(lr_test_df, digits=3, row.names=FALSE)
 ```
 Table 1. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients.
 
+References 
+==========
+
+* Ades F, Zardavas D, Bozovic-Spasojevic I, Pugliano L, et al.
+Luminal B breast cancer: molecular characterization, clinical management, and future perspectives.
+_J Clin Oncol_. 2014; 32(25):2794-803.
+PMID: [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)
+* Ballman K.
+Biomarker: Predictive or Prognostic?
+_J Clin Oncol_. 2015 33(33):3968-3971 
+DOI: [10.1200/JCO.2015.63.3651](http://dx.doi.org/10.1200/JCO.2015.63.3651)
+* Dowsett M, Sestak I, Lopez-Knowles E, Sidhu K, et al.
+Comparison of PAM50 risk of recurrence score with oncotype DX and IHC4 for predicting risk of distant recurrence after endocrine therapy.
+_J Clin Oncol_. 2013; 31(22):2783-90.
+PMID: [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)
+* Kattan MW.
+Judging new markers by their ability to improve predictive accuracy.
+_J Natl Cancer Inst_. 2003; 95(9):634-5.
+PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)
+* Parker JS, Mullins M, Cheang MC, Leung S, et al.
+Supervised risk predictor of breast cancer based on intrinsic subtypes.
+_J Clin Oncol_. 2009 27(8):1160-7.
+PMID: [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)
+* Schmidt M, Böhm D, von Törne C, Steiner E, et al.
+The humoral immune system has a key prognostic impact in node-negative breast cancer.
+_Cancer Res_. 2008 68(13):5405-13. 
+PMID: [18593943](http://www.ncbi.nlm.nih.gov/pubmed/18593943)
+
 ## R session information
 
 ```{r}
