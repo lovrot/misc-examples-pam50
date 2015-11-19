@@ -40,6 +40,11 @@ mainz$trigrp <- with(pData(mainz), factor(
     levels=c("ER+/not H2", "H2", "ER-/not H2")))
 ```
 
+## Introduction
+
+The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score (Parker09JCO, PMID [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)) using a published breast cancer dataset. 
+These notes are generated using an R code bundle available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50), and the aim of this bundle is also to show how one can use the [ProjectTemplate](http://projecttemplate.net/) framework for a data analysis project. 
+
 ## Initial data explorations
 
 ### Illustrative cluster heatmap
