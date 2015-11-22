@@ -53,6 +53,11 @@ In these notes, we use the Mainz cohort of primary breast cancer patients (Schmi
 
 Gene-expression and clinical-pathological data was retrieved from the Gene Expression Omnibus (GEO) at NCBI (accession [GSE11121](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11121)) using the R/Bioconductor package [GEOquery](http://bioconductor.org/packages/GEOquery/). Additionally, the oestrogen receptor status was retrieve from the R/Bioconductor data package [breastCancerMAINZ](http://bioconductor.org/packages/breastCancerMAINZ/).
 
+Clinial-pathological characteristics of the Mainz cohort:
+```{r}
+summary(pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")])
+```
+
 ### Illustrative cluster heatmap
 
 ```{r, fig.width=8, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
