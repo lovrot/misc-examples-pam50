@@ -17,7 +17,7 @@ Then
 2. Knit reports/example-pam50-in-mainz-pdf-version.Rmd and/or  
    reports/example-pam50-in-mainz-html-version.Rmd
 
-A generated report (HTML version) can be viewed at [rpubs.com/lovrot/misc-examples-pam50](http://rpubs.com/lovrot/misc-examples-pam50).
+A generated report (HTML version) can be viewed at [lovrot.github.io/misc-examples-pam50/](http://lovrot.github.io/misc-examples-pam50/).
 
 - - -
 
