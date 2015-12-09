@@ -7,6 +7,7 @@ output:
     rmarkdown::tufte_handout:
         fig_width: 8
         fig_height: 8
+bibliography: bibliography.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -44,7 +45,7 @@ mainz$trigrp <- with(pData(mainz), factor(
 Introduction
 ============
 
-The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score (Parker09JCO, PMID [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)) using a published breast cancer dataset. 
+The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score [@Parker2009] using a published breast cancer dataset. 
 These notes are generated using an R code bundle available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50), and the aim of this bundle is also to show how one can use the [ProjectTemplate](http://projecttemplate.net/) framework for a data analysis project. 
 
 Initial data explorations
@@ -53,7 +54,7 @@ Initial data explorations
 The Mainz dataset
 -----------------
 
-In these notes, we use the Mainz cohort of primary breast cancer patients (Schmidt08CAN, PMID [18593943](http://www.ncbi.nlm.nih.gov/pubmed/18593943)). It is a population based cohort. Lymph node negative disease, no adjuvant therapy.
+In these notes, we use the Mainz cohort of primary breast cancer patients [@Schmidt2008]. It is a population based cohort. Lymph node negative disease, no adjuvant therapy.
 
 Gene-expression and clinical-pathological data was retrieved from the Gene Expression Omnibus (GEO) at NCBI (accession [GSE11121](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11121)) using the R/Bioconductor package [GEOquery](http://bioconductor.org/packages/GEOquery/). Additionally, the oestrogen receptor status was retrieve from the R/Bioconductor data package [breastCancerMAINZ](http://bioconductor.org/packages/breastCancerMAINZ/).
 
@@ -96,7 +97,7 @@ plot(fig, widths=c(1, 5, 0.5), heights=c(1.5, 5, 2))
 Assocations with outcome
 ========================
 
-Since the Mainz dataset is a cohort of patients not receiving systemic therapy after surgery, the associations with outcome we observe are pure prognostic. For an introduction to the difference between prognostic and therapy predictive biomarkers, see, for example, the editorial by Ballman15JCO (DOI: [10.1200/JCO.2015.63.3651](http://dx.doi.org/10.1200/JCO.2015.63.3651)). A biomarker can of course also be both prognostic and therapy predictive. An example is HER2 status.
+Since the Mainz dataset is a cohort of patients not receiving systemic therapy after surgery, the associations with outcome we observe are pure prognostic. For an introduction to the difference between prognostic and therapy predictive biomarkers, see, for example, the editorial by @Ballman2015. A biomarker can of course also be both prognostic and therapy predictive. An example is HER2 status.
 
 Illustration of excess distant metastases plots
 -----------------------------------------------
@@ -182,14 +183,14 @@ cowplot::ggdraw() +
     cowplot::draw_plot_label(c("A", "B", "C"), x=c(0, 1/4, 0), y=c(1, 1, 1/2))
 ```
 
-See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review Ades14JCO (PMID [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)).
+See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by @Ades2014.
 
 \clearpage
 
 Added value of ROR score in ER+ patients
 ----------------------------------------
 
-One should judge a candidate biomarker by its ability to improve prognostic/predictive accuracy beyond known prognosicators/predictors, see, for example, the editorial by Kattan03JNCI (PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)).
+One should judge a candidate biomarker by its ability to improve prognostic/predictive accuracy beyond known prognosicators/predictors, see, for example, the editorial by @Kattan2003.
 
 Initial exploratory plots:
 
@@ -238,7 +239,7 @@ cowplot::plot_grid(gg1, gg2, gg3, gg4,
 
 \clearpage
 
-Formal statistical inference, compare with, for example, Dowsett13JCO (PMID [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)):
+Formal statistical inference, compare with, for example, @Dowsett2013:
 
 ```{r}
 model1a <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
@@ -325,36 +326,6 @@ print(xtab, include.rownames=FALSE)
 
 \newpage
 
-References 
-==========
-
-* Ades F, Zardavas D, Bozovic-Spasojevic I, Pugliano L, et al.
-Luminal B breast cancer: molecular characterization, clinical management, and future perspectives.
-_J Clin Oncol_. 2014; 32(25):2794-803.
-PMID: [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)
-* Ballman K.
-Biomarker: Predictive or Prognostic?
-_J Clin Oncol_. 2015 33(33):3968-3971 
-DOI: [10.1200/JCO.2015.63.3651](http://dx.doi.org/10.1200/JCO.2015.63.3651)
-* Dowsett M, Sestak I, Lopez-Knowles E, Sidhu K, et al.
-Comparison of PAM50 risk of recurrence score with oncotype DX and IHC4 for predicting risk of distant recurrence after endocrine therapy.
-_J Clin Oncol_. 2013; 31(22):2783-90.
-PMID: [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)
-* Kattan MW.
-Judging new markers by their ability to improve predictive accuracy.
-_J Natl Cancer Inst_. 2003; 95(9):634-5.
-PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)
-* Parker JS, Mullins M, Cheang MC, Leung S, et al.
-Supervised risk predictor of breast cancer based on intrinsic subtypes.
-_J Clin Oncol_. 2009 27(8):1160-7.
-PMID: [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)
-* Schmidt M, Böhm D, von Törne C, Steiner E, et al.
-The humoral immune system has a key prognostic impact in node-negative breast cancer.
-_Cancer Res_. 2008 68(13):5405-13. 
-PMID: [18593943](http://www.ncbi.nlm.nih.gov/pubmed/18593943)
-
-\newpage
-
 R session information
 =====================
 
@@ -362,7 +333,7 @@ R session information
 toLatex(sessionInfo(), locale=FALSE)
 ```
 
-- - -
+- - - 
 
 &copy; 2015 John Lövrot.
 This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
@@ -370,3 +341,7 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
 The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).
 Version `r format(read.dcf("../description.dcf")[1, "version"])`
 
+\newpage
+
+References 
+==========
