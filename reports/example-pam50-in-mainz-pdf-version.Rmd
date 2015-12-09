@@ -3,7 +3,11 @@ title: "Example: PAM50 subtypes in the Mainz dataset"
 author: "John Lövrot"
 license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format='%B %d, %Y')`"
-output: rmarkdown::tufte_handout
+output: 
+    rmarkdown::tufte_handout:
+        fig_width: 8
+        fig_height: 8
+bibliography: bibliography.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -41,7 +45,7 @@ mainz$trigrp <- with(pData(mainz), factor(
 Introduction
 ============
 
-The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score (Parker09JCO, PMID [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)) using a published breast cancer dataset. 
+The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score [@Parker2009] using a published breast cancer dataset. 
 These notes are generated using an R code bundle available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50), and the aim of this bundle is also to show how one can use the [ProjectTemplate](http://projecttemplate.net/) framework for a data analysis project. 
 
 Initial data explorations
@@ -50,7 +54,7 @@ Initial data explorations
 The Mainz dataset
 -----------------
 
-In these notes, we use the Mainz cohort of primary breast cancer patients (Schmidt08CAN, PMID [18593943](http://www.ncbi.nlm.nih.gov/pubmed/18593943)). It is a population based cohort. Lymph node negative disease, no adjuvant therapy.
+In these notes, we use the Mainz cohort of primary breast cancer patients [@Schmidt2008]. It is a population based cohort. Lymph node negative disease, no adjuvant therapy.
 
 Gene-expression and clinical-pathological data was retrieved from the Gene Expression Omnibus (GEO) at NCBI (accession [GSE11121](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11121)) using the R/Bioconductor package [GEOquery](http://bioconductor.org/packages/GEOquery/). Additionally, the oestrogen receptor status was retrieve from the R/Bioconductor data package [breastCancerMAINZ](http://bioconductor.org/packages/breastCancerMAINZ/).
 
@@ -59,7 +63,7 @@ Gene-expression and clinical-pathological data was retrieved from the Gene Expre
 Illustrative cluster heatmap
 ----------------------------
 
-```{r, fig.width=8, fig.height=9, fig.cap="Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
+```{r, fig.height=9, fig.cap="Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
 data("pam50", package="genefu")
 eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
 eset50 <- genefilter::featureFilter(eset50)
@@ -93,7 +97,7 @@ plot(fig, widths=c(1, 5, 0.5), heights=c(1.5, 5, 2))
 Assocations with outcome
 ========================
 
-Since the Mainz dataset is a cohort of patients not receiving systemic therapy after surgery, the associations with outcome we observe are pure prognostic. For an introduction to the difference between prognostic and therapy predictive biomarkers, see, for example, the editorial by Ballman15JCO (DOI: [10.1200/JCO.2015.63.3651](http://dx.doi.org/10.1200/JCO.2015.63.3651)). A biomarker can of course also be both prognostic and therapy predictive. An example is HER2 status.
+Since the Mainz dataset is a cohort of patients not receiving systemic therapy after surgery, the associations with outcome we observe are pure prognostic. For an introduction to the difference between prognostic and therapy predictive biomarkers, see, for example, the editorial by @Ballman2015. A biomarker can of course also be both prognostic and therapy predictive. An example is HER2 status.
 
 Illustration of excess distant metastases plots
 -----------------------------------------------
@@ -106,7 +110,7 @@ Corresponding plots for PAM50 intrinsic subtypes are added for comparison.
 
 \newpage
 
-```{r, fig.width=8, fig.height=4, fig.cap="Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
+```{r, fig.height=4, fig.cap="Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
@@ -125,7 +129,7 @@ gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=excessdm)) +
 cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
 ```
 
-```{r, fig.width=8, fig.height=5.5, fig.cap="Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
+```{r, fig.height=5.5, fig.cap="Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
 layout(matrix(1:2, nrow=1, byrow=TRUE))
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
@@ -179,18 +183,18 @@ cowplot::ggdraw() +
     cowplot::draw_plot_label(c("A", "B", "C"), x=c(0, 1/4, 0), y=c(1, 1, 1/2))
 ```
 
-See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review Ades14JCO (PMID [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)).
+See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by @Ades2014.
 
 \clearpage
 
 Added value of ROR score in ER+ patients
 ----------------------------------------
 
-One should judge a candidate biomarker by its ability to improve prognostic/predictive accuracy beyond known prognosicators/predictors, see, for example, the editorial by Kattan03JNCI (PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)).
+One should judge a candidate biomarker by its ability to improve prognostic/predictive accuracy beyond known prognosicators/predictors, see, for example, the editorial by @Kattan2003.
 
 Initial exploratory plots:
 
-```{r, fig.width=8, fig.height=8, fig.cap="Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+```{r, fig.height=8, fig.cap="Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(
@@ -235,7 +239,7 @@ cowplot::plot_grid(gg1, gg2, gg3, gg4,
 
 \clearpage
 
-Formal statistical inference, compare with, for example, Dowsett13JCO (PMID [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)):
+Formal statistical inference, compare with, for example, @Dowsett2013:
 
 ```{r}
 model1a <- coxph(Surv(survdmtm, dmstat) ~ NPI, 
@@ -290,7 +294,7 @@ lr_test_df <- rbind(
         as.data.frame(anova(model1b, model3b)[2, 2:4])))
 ```
 
-```{r, fig.width=8, fig.height=4, fig.margin=FALSE, fig.cap="Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
+```{r, fig.height=4, fig.margin=FALSE, fig.cap="Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
 
 colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
@@ -322,36 +326,6 @@ print(xtab, include.rownames=FALSE)
 
 \newpage
 
-References 
-==========
-
-* Ades F, Zardavas D, Bozovic-Spasojevic I, Pugliano L, et al.
-Luminal B breast cancer: molecular characterization, clinical management, and future perspectives.
-_J Clin Oncol_. 2014; 32(25):2794-803.
-PMID: [25049332](http://www.ncbi.nlm.nih.gov/pubmed/25049332)
-* Ballman K.
-Biomarker: Predictive or Prognostic?
-_J Clin Oncol_. 2015 33(33):3968-3971 
-DOI: [10.1200/JCO.2015.63.3651](http://dx.doi.org/10.1200/JCO.2015.63.3651)
-* Dowsett M, Sestak I, Lopez-Knowles E, Sidhu K, et al.
-Comparison of PAM50 risk of recurrence score with oncotype DX and IHC4 for predicting risk of distant recurrence after endocrine therapy.
-_J Clin Oncol_. 2013; 31(22):2783-90.
-PMID: [23816962](http://www.ncbi.nlm.nih.gov/pubmed/23816962)
-* Kattan MW.
-Judging new markers by their ability to improve predictive accuracy.
-_J Natl Cancer Inst_. 2003; 95(9):634-5.
-PMID: [12734304](http://www.ncbi.nlm.nih.gov/pubmed/12734304)
-* Parker JS, Mullins M, Cheang MC, Leung S, et al.
-Supervised risk predictor of breast cancer based on intrinsic subtypes.
-_J Clin Oncol_. 2009 27(8):1160-7.
-PMID: [19204204](http://www.ncbi.nlm.nih.gov/pubmed/19204204)
-* Schmidt M, Böhm D, von Törne C, Steiner E, et al.
-The humoral immune system has a key prognostic impact in node-negative breast cancer.
-_Cancer Res_. 2008 68(13):5405-13. 
-PMID: [18593943](http://www.ncbi.nlm.nih.gov/pubmed/18593943)
-
-\newpage
-
 R session information
 =====================
 
@@ -359,7 +333,7 @@ R session information
 toLatex(sessionInfo(), locale=FALSE)
 ```
 
-- - -
+- - - 
 
 &copy; 2015 John Lövrot.
 This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
@@ -367,3 +341,7 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
 The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).
 Version `r format(read.dcf("../description.dcf")[1, "version"])`
 
+\newpage
+
+References 
+==========
