@@ -326,5 +326,6 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
 The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).  
 Version `r format(read.dcf("../description.dcf")[1, "version"])`
 
-References 
-==========
+## References 
+
+<!-- Reference list here-->
