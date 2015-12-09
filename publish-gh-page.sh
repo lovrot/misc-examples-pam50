@@ -3,11 +3,14 @@
 ## Inspiration
 ## http://stackoverflow.com/questions/7933044/commit-a-file-to-a-different-branch-without-checkout
 
+git branch -D gh-pages  # delete old branch -- no reason to version control
+
 cd /tmp/
 git clone ~/git/misc-examples-pam50
 
 cd /tmp/misc-examples-pam50/
-git checkout gh-pages
+git checkout --orphan gh-pages  # create new
+git rm -rf .
 
 cp ~/git/misc-examples-pam50/reports/example-pam50-in-mainz-html-version.html ./index.html
 
