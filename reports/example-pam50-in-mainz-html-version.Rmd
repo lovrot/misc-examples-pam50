@@ -5,7 +5,10 @@ license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format='%B %d, %Y')`"
 output: 
     tufterhandout::html_tufte_handout: 
+        theme: cosmo
         toc: true
+        figure_width: 8
+        figure_height: 8
 ---
 
 ```{r setup, include=FALSE}
@@ -60,7 +63,7 @@ summary(pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")])
 
 ### Illustrative cluster heatmap
 
-```{r, fig.width=8, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
+```{r, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
 data("pam50", package="genefu")
 eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
 eset50 <- genefilter::featureFilter(eset50)
@@ -101,7 +104,7 @@ The shape of the smoother indicates the form of an association between the index
 Mathematically, the excess distant metastases are martingale residuals in a null Cox model. 
 Corresponding plots for PAM50 intrinsic subtypes are added for comparison.
 
-```{r, fig.width=8, fig.height=4, fig.cap="Figure 2. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
+```{r, fig.height=4, fig.cap="Figure 2. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
@@ -120,7 +123,7 @@ gg2 <- ggplot(data=pData(mainz), aes(x=subtypecd, y=excessdm)) +
 cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
 ```
 
-```{r, fig.width=8, fig.height=5.5, fig.cap="Figure 3. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
+```{r, fig.height=5.5, fig.cap="Figure 3. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
 layout(matrix(1:2, nrow=1, byrow=TRUE))
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
@@ -179,7 +182,7 @@ One should judge a candidate biomarker by its ability to improve prognostic/pred
 
 Initial exploratory plots:
 
-```{r, fig.width=8, fig.height=8, fig.cap="Figure 5. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+```{r, fig.cap="Figure 5. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(
@@ -277,7 +280,7 @@ lr_test_df <- rbind(
         as.data.frame(anova(model1b, model3b)[2, 2:4])))
 ```
 
-```{r, fig.width=8, fig.height=4, fig.cap="Figure 6. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
+```{r, fig.height=4, fig.cap="Figure 6. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
 
 colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
