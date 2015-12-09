@@ -29,10 +29,6 @@ theme_set(theme_bw())
 
 col4 <- rev(RColorBrewer::brewer.pal(4, "RdYlBu"))
 names(col4) <- paste0("Q", 1:4)
-
-# options(xtable.comment=FALSE)
-# options(xtable.booktabs=TRUE)
-# options(xtable.size="footnotesize")
 ```
 
 ```{r, additional_munging}
