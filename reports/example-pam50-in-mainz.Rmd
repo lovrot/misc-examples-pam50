@@ -13,7 +13,7 @@ bibliography: bibliography.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-html-', 
+knitr::opts_chunk$set(fig.path='graphics/example-pam50-in-mainz-', 
     echo=FALSE, warning=FALSE, message=FALSE)
 ```
 
