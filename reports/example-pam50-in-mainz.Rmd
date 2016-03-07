@@ -340,7 +340,7 @@ print(sessionInfo(), locale=FALSE)
 
 - - -
 
-Copyright &copy; 2015 by John Lövrot.
+Copyright &copy; 2015-2016 by John Lövrot.
 This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).  
 The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).  
 Version `r format(read.dcf("../description.dcf")[1, "version"])`
