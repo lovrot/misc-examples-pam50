@@ -3,7 +3,7 @@
 ## Inspiration
 ## http://stackoverflow.com/questions/7933044/commit-a-file-to-a-different-branch-without-checkout
 
-git branch -D gh-pages  # delete old branch -- no reason to version control
+git branch -D gh-pages  # delete old branch -- no reason to version control gh-pages
 git push origin :gh-pages
 
 cd /tmp/
