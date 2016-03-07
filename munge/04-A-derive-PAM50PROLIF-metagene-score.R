@@ -1,9 +1,3 @@
-## Author(s):
-## John Lövrot (orcid.org/0000-0002-9339-8059)
-##
-## License: CC BY 4.0
-## https://creativecommons.org/licenses/by/4.0/
-
 ## Extract eset with probesets annotated with the 11 PAM50-PROLIF genes
 eset <- mainz[fData(mainz)$entrezid %in% Nielsen10CCRTabS1$entrezid, ]
 
