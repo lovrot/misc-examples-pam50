@@ -26,7 +26,7 @@ setwd("reports")
 ```
 
 ```{r settings}
-theme_set(theme_bw())
+ggplot2::theme_set(theme_classic())
 
 col4 <- rev(RColorBrewer::brewer.pal(4, "RdYlBu"))
 names(col4) <- paste0("Q", 1:4)
