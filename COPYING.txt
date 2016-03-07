@@ -1,4 +1,4 @@
-Copyright (c) 2015 John Lövrot
+Copyright (c) 2015 by John Lövrot
 
 License: CC BY 4.0
 
