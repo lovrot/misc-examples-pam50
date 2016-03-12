@@ -310,7 +310,7 @@ cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
 
 ```{r}
 knitr::kable(lr_test_df, digits=3, row.names=FALSE, 
-    caption="Table 2. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients. Corresponding tests to assess added value of NPI beyond ROR-S is also included for comparison.")
+    caption="Table 2. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients. Corresponding tests to assess the added value of NPI beyond ROR-S is also included for comparison.")
 ```
 
 # R session information
