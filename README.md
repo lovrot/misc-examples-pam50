@@ -16,7 +16,7 @@ Then
 1. Run src/cache-objects.R
 2. Knit reports/example-pam50-in-mainz.Rmd
 
-A generated report (HTML version) can be viewed at [lovrot.github.io/misc-examples-pam50/](http://lovrot.github.io/misc-examples-pam50/).
+A generated report can be viewed at [lovrot.github.io/misc-examples-pam50/](http://lovrot.github.io/misc-examples-pam50/).
 
 - - -
 
