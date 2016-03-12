@@ -128,13 +128,13 @@ layout(matrix(1:2, nrow=1, byrow=TRUE))
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
     data=pData(mainz), 
-    col=col4, lwd=1, xmax=7, 
+    col=col4, lwd=1, xmax=7, bty="n", 
     stitle="Proliferation index", main="A",
     xlab="Time (years)", ylab="Distant metastasis-free survival")
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd, 
     data=pData(mainz), 
-    col=colCGANsubtypecd[levels(mainz$subtypecd)], lwd=1, xmax=7, 
+    col=colCGANsubtypecd[levels(mainz$subtypecd)], lwd=1, xmax=7, bty="n", 
     stitle="Intrinsic subtype", main="B",
     xlab="Time (years)", ylab="Distant metastasis-free survival")
 
