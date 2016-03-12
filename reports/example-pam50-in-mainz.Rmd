@@ -142,7 +142,7 @@ survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd,
 
 ### Proliferation, intrinsic subtypes and outcome
 
-```{r, fig.width=12, fig.height=6, fig.cap="Figure 4. Proliferation, intrinsic subtype and outcome."}
+```{r, fig.width=12, fig.height=6, fig.fullwidth=TRUE, fig.cap="Figure 4. Proliferation, intrinsic subtype and outcome."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data=pData(mainz), aes(x=PAM50PROLIF, y=excessdm)) + 
