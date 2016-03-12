@@ -54,16 +54,16 @@ Gene-expression and clinical-pathological data was retrieved from the Gene Expre
 
 ```{r}
 ## Adopted from http://stackoverflow.com/a/29953844
-out <- knitr::kable(
-    summary(pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")], 
-        digits=2), 
-    caption="Table 1. Clinial-pathological characteristics of the Mainz cohort.")
+tmp_df <- pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")]
+names(tmp_df) <- c("Tumour size (cm)", "Nodal status", "ER status", "Tumour grade", "Intrinsic subtype")
+out <- knitr::kable(summary(tmp_df,  digits=2), 
+    caption="Table 1. Clinial-pathological characteristics of the Mainz cohort. ER: Oestrogen receptor; LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like.")
 gsub('NA', '  ', out)
 ```
 
 ### Illustrative cluster heatmap
 
-```{r, fig.width=8, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like; PAM50PROLIF: PAM50 proliferation index; ER: Oestrogen receptor."}
+```{r, fig.width=8, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
 data("pam50", package="genefu")
 eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
 eset50 <- genefilter::featureFilter(eset50)
