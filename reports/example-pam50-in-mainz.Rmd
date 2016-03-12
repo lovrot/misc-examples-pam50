@@ -52,9 +52,13 @@ In these notes, we use the Mainz cohort of primary breast cancer patients [@Schm
 
 Gene-expression and clinical-pathological data was retrieved from the Gene Expression Omnibus (GEO) at NCBI (accession [GSE11121](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11121)) using the R/Bioconductor package [GEOquery](http://bioconductor.org/packages/GEOquery/). Additionally, the oestrogen receptor status was retrieve from the R/Bioconductor data package [breastCancerMAINZ](http://bioconductor.org/packages/breastCancerMAINZ/).
 
-Clinial-pathological characteristics of the Mainz cohort:
 ```{r}
-summary(pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")])
+## Adopted from http://stackoverflow.com/a/29953844
+out <- knitr::kable(
+    summary(pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")], 
+        digits=2), 
+    caption="Table 1. Clinial-pathological characteristics of the Mainz cohort.")
+gsub('NA', '  ', out)
 ```
 
 ### Illustrative cluster heatmap
@@ -301,7 +305,7 @@ cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
 
 ```{r}
 knitr::kable(lr_test_df, digits=3, row.names=FALSE, 
-    caption="Table 1. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients.")
+    caption="Table 2. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients.")
 ```
 
 ## R session information
