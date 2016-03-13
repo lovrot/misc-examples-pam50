@@ -6,7 +6,7 @@ munging: TRUE
 logging: FALSE
 load_libraries: TRUE
 libraries: Biobase, BiocGenerics, GEOquery, hgu133a.db, genefilter, Heatplus,
-    ggplot2, xtable, survival, survplot
+    ggplot2, survival, survplot
 as_factors: FALSE
 data_tables: FALSE
 attach_internal_libraries: FALSE
