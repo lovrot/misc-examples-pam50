@@ -66,6 +66,8 @@ gsub('NA', '  ', out)
 ## Illustrative cluster heatmap
 
 ```{r, fig.width=8, fig.height=9, fig.cap="Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
+par(bg="transparent", bty="n", family="serif")
+
 data("pam50", package="genefu")
 eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
 eset50 <- genefilter::featureFilter(eset50)
@@ -127,11 +129,11 @@ cowplot::plot_grid(gg1, gg2, labels=c("A", "B"), nrow=1)
 
 ```{r, fig.width=9, fig.height=6, fig.cap="Figure 3. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
 layout(matrix(1:2, nrow=1, byrow=TRUE))
+par(bg="transparent", bty="n", family="serif")
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
     data=pData(mainz), 
     col=col4, lwd=1, xmax=7, 
-    bty="n", family="serif",
     stitle="Proliferation index",
     xlab="Time (years)", ylab="Distant metastasis-free survival")
 title(main="A", adj=0)
@@ -139,7 +141,6 @@ title(main="A", adj=0)
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ subtypecd, 
     data=pData(mainz), 
     col=colCGANsubtypecd[levels(mainz$subtypecd)], lwd=1, xmax=7, 
-    bty="n", family="serif",
     stitle="Intrinsic subtype",
     xlab="Time (years)", ylab="Distant metastasis-free survival")
 title(main="B", adj=0)
