@@ -4,13 +4,13 @@ author: "John Lövrot"
 license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format = '%B %d, %Y')`"
 output: 
-    tufte::tufte_html: 
-        toc: true
-        fig_width: 8
-        fig_height: 4
+  tufte::tufte_html: 
+    toc: true
+    fig_width: 8
+    fig_height: 4
 link-citations: yes
 bibliography: bibliography.bib
-#csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
 ---
 
 ```{r setup, include = FALSE}
