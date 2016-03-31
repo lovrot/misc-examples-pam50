@@ -13,4 +13,4 @@ pData(mainz) <- tmpPData
 
 varMetadata(mainz)["excessdm", "labelDescription"] <- "Excess distant metastases"
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))

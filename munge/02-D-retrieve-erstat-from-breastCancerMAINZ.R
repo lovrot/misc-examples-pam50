@@ -14,4 +14,4 @@ assign("mainz", our_mainz)  # rename back
 
 varMetadata(mainz)["erstat", "labelDescription"] <- varnamconv["erstat", "labelDescription"]
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))

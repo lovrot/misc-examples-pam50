@@ -8,6 +8,6 @@ eset <- genefilter::featureFilter(eset)
 mainz$PAM50PROLIF  <- colMeans(exprs(eset))
 
 varMetadata(mainz)["PAM50PROLIF", "labelDescription"] <-
-    "PAM50 proliferation index"
+  "PAM50 proliferation index"
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))
