@@ -148,6 +148,8 @@ title(main = "B", adj = 0)
 
 ## Proliferation, intrinsic subtypes and outcome
 
+See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by Ades et al. [@Ades2014]
+
 ```{r, fig.width = 15, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure 4. Proliferation, intrinsic subtype and outcome."}
 ylim0 <- range(mainz$excessdm)
 
@@ -179,8 +181,6 @@ cowplot::ggdraw() +
   cowplot::draw_plot(gg3, 1/4 + 0.05, 0, 3/4 - 0.05, 1) +
   cowplot::draw_plot_label(c("A", "B", "C"), x = c(0, 0, 1/4), y = c(1, 1/2, 1))
 ```
-
-See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by Ades et al. [@Ades2014]
 
 ## Added value of ROR score in ER+ patients
 
