@@ -127,7 +127,7 @@ gg2 <- ggplot(data = pData(mainz), aes(x = subtypecd, y = excessdm)) +
   scale_colour_manual(values = colCGANsubtypecd, guide = FALSE) + 
   labs(x = "Intrinsic subtype", y = "Excess distant metastases")
 
-cowplot::plot_grid(gg1, gg2, labels = c("A", "B"), nrow = 1)
+cowplot::plot_grid(gg1, gg2, labels = "AUTO", nrow = 1)
 ```
 
 ```{r, fig.width = 9, fig.height = 6, fig.cap = "Figure 3. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
@@ -231,7 +231,7 @@ gg4 <- ggplot(
   labs(y = "Excess distant metastases")
 
 cowplot::plot_grid(gg1, gg2, gg3, gg4, 
-  labels = c("A", "B", "C", "D"), nrow = 2)
+  labels = "AUTO", nrow = 2)
 ```
 
 Formal statistical inference, compare with, for example, Dowsett et al. [@Dowsett2013]:
@@ -309,7 +309,7 @@ gg2 <- ggplot(data = subset(cindex_df, subpop  ==  "ER+/not H2"),
   scale_fill_manual(values = colmarker, guide = FALSE) +
   labs(x = "", y = "C index")
 
-cowplot::plot_grid(gg1, gg2, labels = c("A", "B"), nrow = 1)
+cowplot::plot_grid(gg1, gg2, labels = "AUTO", nrow = 1)
 ```
 
 ```{r}
