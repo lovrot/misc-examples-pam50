@@ -27,7 +27,8 @@ setwd("reports")
 ```
 
 ```{r settings}
-ggplot2::theme_set(ggthemes::theme_tufte())
+#ggplot2::theme_set(ggthemes::theme_tufte())
+ggplot2::theme_set(theme_classic(base_family = "serif"))
 
 col4 <- rev(RColorBrewer::brewer.pal(4, "RdYlBu"))
 names(col4) <- paste0("Q", 1:4)
