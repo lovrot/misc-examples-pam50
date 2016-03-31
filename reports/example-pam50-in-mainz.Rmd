@@ -196,7 +196,7 @@ gg1 <- ggplot(
   aes(x = NPI, y = excessdm)) + 
   geom_point(shape = 1) + 
   geom_smooth(method = "loess", span = 1, col = "red") +
-  facet_grid(. ~ erstat) +
+  #facet_grid(. ~ erstat) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
 
@@ -205,7 +205,7 @@ gg2 <- ggplot(
   aes(x = NPI, y = excessdm)) + 
   geom_point(shape = 1) + 
   geom_smooth(method = "loess", span = 1, col = "red") +
-  facet_grid(. ~ trigrp) +
+  #facet_grid(. ~ trigrp) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
 
@@ -214,7 +214,7 @@ gg3 <- ggplot(
   aes(x = RORS, y = excessdm)) + 
   geom_point(shape = 1) + 
   geom_smooth(method = "loess", col = "red") +
-  facet_grid(. ~ erstat) +
+  #facet_grid(. ~ erstat) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
 
@@ -223,7 +223,7 @@ gg4 <- ggplot(
   aes(x = RORS, y = excessdm)) + 
   geom_point(shape = 1) + 
   geom_smooth(method = "loess", col = "red") +
-  facet_grid(. ~ trigrp) +
+  #facet_grid(. ~ trigrp) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
 
@@ -294,7 +294,7 @@ gg1 <- ggplot(data = subset(cindex_df, subpop  ==  "ER+"),
   aes(x = marker, y = cindex, fill = marker)) +
   geom_bar(stat = "identity", position = "dodge") +
   coord_cartesian(ylim = c(0.5, 0.8)) +
-  facet_grid(. ~ subpop) +
+  #facet_grid(. ~ subpop) +
   scale_fill_manual(values = colmarker, guide = FALSE) +
   labs(x = "", y = "C index")
 
@@ -302,7 +302,7 @@ gg2 <- ggplot(data = subset(cindex_df, subpop  ==  "ER+/not H2"),
   aes(x = marker, y = cindex, fill = marker)) +
   geom_bar(stat = "identity", position = "dodge") +
   coord_cartesian(ylim = c(0.5, 0.8)) +
-  facet_grid(. ~ subpop) +
+  #facet_grid(. ~ subpop) +
   scale_fill_manual(values = colmarker, guide = FALSE) +
   labs(x = "", y = "C index")
 
