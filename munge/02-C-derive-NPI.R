@@ -5,4 +5,4 @@ if (all(mainz$tumsizeu == "cm") & all(mainz$lnstat == "LN-"))
 
 varMetadata(mainz)["NPI", "labelDescription"] <- "Nottingham prognostic index"
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))

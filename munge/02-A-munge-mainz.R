@@ -28,6 +28,4 @@ fData(mainz)$entrezid <- unlist(mget(featureNames(mainz),
 fData(mainz)$symbol <- unlist(mget(featureNames(mainz),
   hgu133aSYMBOL, ifnotfound = NA))
 
-## Check
-if (!validObject(mainz))
-  stop("mainz not munged correctly")
+stopifnot(validObject(mainz))

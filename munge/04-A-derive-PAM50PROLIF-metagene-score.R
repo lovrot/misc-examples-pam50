@@ -10,4 +10,4 @@ mainz$PAM50PROLIF  <- colMeans(exprs(eset))
 varMetadata(mainz)["PAM50PROLIF", "labelDescription"] <-
   "PAM50 proliferation index"
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))

@@ -69,4 +69,4 @@ pick <- c("subtypecd", "subtype")
 varMetadata(mainz)[pick, "labelDescription"] <- varnamconv[pick, "labelDescription"]
 varMetadata(mainz)["RORS", "labelDescription"] <- "PAM50 Risk of reccurence score (subtype alone)"
 
-validObject(mainz)  # check
+stopifnot(validObject(mainz))
