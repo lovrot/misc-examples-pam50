@@ -267,23 +267,23 @@ lr_test_df <- rbind(
   cbind(
     data.frame(
       Population = c("ER+"), 
-      Comparison = "NPI+RORS vs RORS"), 
-    as.data.frame(anova(model2a, model3a)[2, 2:4])), 
-  cbind(
-    data.frame(
-      Population = c("ER+"), 
       Comparison = "NPI+RORS vs NPI"), 
     as.data.frame(anova(model1a, model3a)[2, 2:4])),
   cbind(
     data.frame(
-      Population = c("ER+/not H2"), 
+      Population = c("ER+"), 
       Comparison = "NPI+RORS vs RORS"), 
-    as.data.frame(anova(model2b, model3b)[2, 2:4])), 
+    as.data.frame(anova(model2a, model3a)[2, 2:4])), 
   cbind(
     data.frame(
       Population = c("ER+/not H2"), 
       Comparison = "NPI+RORS vs NPI"), 
-    as.data.frame(anova(model1b, model3b)[2, 2:4])))
+    as.data.frame(anova(model1b, model3b)[2, 2:4])),
+  cbind(
+    data.frame(
+      Population = c("ER+/not H2"), 
+      Comparison = "NPI+RORS vs RORS"), 
+    as.data.frame(anova(model2b, model3b)[2, 2:4]))) 
 ```
 
 ```{r, fig.cap = "Figure 6. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
