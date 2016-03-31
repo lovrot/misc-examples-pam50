@@ -85,8 +85,10 @@ fig <- annHeatmap2(
     Col = list(clustfun = hclust_avl, distfun = dist_cor, status = "yes", lwd = 1), 
     Row = list(clustfun = hclust_avl, distfun = dist_cor, status = "hide")), 
   annotation = list(
-    Col = list(data = pData(eset50)[, c("erstat", "PAM50PROLIF", "subtypecd")], inclRef = TRUE), 
-    Row = list(data = fData(eset50)[, "PAM50PROLIF", drop = FALSE], inclRef = FALSE)), 
+    Col = list(data = pData(eset50)[, c("erstat", "PAM50PROLIF", "subtypecd")], 
+      inclRef = TRUE), 
+    Row = list(data = fData(eset50)[, "PAM50PROLIF", drop = FALSE], 
+      inclRef = FALSE)), 
   labels = list(
     Col = list(labels = NULL),
     Row = list(cex = 0.75)),
