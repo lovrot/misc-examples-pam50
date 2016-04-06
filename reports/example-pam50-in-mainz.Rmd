@@ -1,5 +1,5 @@
 ---
-title: "Example: PAM50 subtypes in the Mainz dataset"
+title: "Example: PAM50 intrinsic subtypes in the Mainz dataset"
 author: "John Lövrot"
 license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format = '%B %d, %Y')`"
