@@ -263,12 +263,12 @@ cindex_df <- data.frame(
   marker = factor(rep(c("NPI", "RORS", "NPI+RORS"), times = 2), 
     levels = c("NPI", "RORS", "NPI+RORS")), 
   cindex = c(
-    summary(model1a)$concordance["concordance.concordant"], 
-    summary(model2a)$concordance["concordance.concordant"], 
-    summary(model3a)$concordance["concordance.concordant"],
-    summary(model1b)$concordance["concordance.concordant"], 
-    summary(model2b)$concordance["concordance.concordant"], 
-    summary(model3b)$concordance["concordance.concordant"]))
+    summary(model1a)$concordance["C"], 
+    summary(model2a)$concordance["C"], 
+    summary(model3a)$concordance["C"],
+    summary(model1b)$concordance["C"], 
+    summary(model2b)$concordance["C"], 
+    summary(model3b)$concordance["C"]))
 
 ## Likelihood ratio tests
 lr_test_df <- rbind(
