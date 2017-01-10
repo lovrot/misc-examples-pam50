@@ -112,7 +112,7 @@ eset50$tsne1 <- tsne_mainz50$Y[, 1]
 eset50$tsne2 <- tsne_mainz50$Y[, 2]
 ```
 
-```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and one minus Spearman's correlation distance metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
+```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and using one minus Spearman's correlation distance metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
 gg1 <- ggplot(data = pData(eset), 
   aes(x = tsne1, y = tsne2, col = subtypecd)) +
   geom_point() +
