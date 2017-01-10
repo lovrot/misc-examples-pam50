@@ -58,6 +58,23 @@ Gene-expression and clinical-pathological data was retrieved from the Gene Expre
 
 # Initial data explorations
 
+```{r}
+eset <- genefilter::nsFilter(mainz, var.cutoff = 0.8)$eset
+
+## Gene-center data using the median
+exprs(eset) <- sweep(exprs(eset), 1, apply(exprs(eset), 1, "median"))
+```
+
+```{r}
+data("pam50", package = "genefu")
+eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
+eset50 <- genefilter::featureFilter(eset50)
+featureNames(eset50) <- fData(eset50)$symbol
+
+## Gene-center data using the median
+exprs(eset50) <- sweep(exprs(eset50), 1, apply(exprs(eset50), 1, "median"))
+```
+
 ## Clinical-pathological characteristics
 
 ```{r tab1}
@@ -69,18 +86,54 @@ out <- knitr::kable(summary(tmp_df,  digits = 2),
 gsub('NA', '  ', out)
 ```
 
+## t-SNE plots
+
+t-distributed stochastic neighbour embedding (t-SNE) plots.
+
+```{r}
+set.seed(20101216)
+x <- t(exprs(eset))
+d <- dist_cor(x, method = "spearman")
+tsne_mainz <- Rtsne(d, theta = 0)
+## theta = 0: exact t-SNE
+## perplexity: "This value effectively controls how many nearest neighbours are taken into account when constructing the embedding in the low-dimensional space"
+
+eset$tsne1 <- tsne_mainz$Y[, 1]
+eset$tsne2 <- tsne_mainz$Y[, 2]
+```
+
+```{r}
+set.seed(20101216)
+x <- t(exprs(eset50))
+d <- dist_cor(x, method = "spearman")
+tsne_mainz50 <- Rtsne(d, theta = 0)
+
+eset50$tsne1 <- tsne_mainz50$Y[, 1]
+eset50$tsne2 <- tsne_mainz50$Y[, 2]
+```
+
+```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and one minus Spearman's correlation distance metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
+gg1 <- ggplot(data = pData(eset), 
+  aes(x = tsne1, y = tsne2, col = subtypecd)) +
+  geom_point() +
+  scale_colour_manual(values = colCGANsubtypecd, guide = FALSE) +
+  coord_equal() +
+  labs(x = "t-SNE 1", y = "t-SNE 2")
+
+gg2 <- ggplot(data = pData(eset50), 
+  aes(x = tsne1, y = tsne2, col = subtypecd)) +
+  geom_point() +
+  scale_colour_manual(values = colCGANsubtypecd) +
+  coord_equal() +
+  labs(x = "t-SNE 1", y = "t-SNE 2", col = "Subtype")
+
+cowplot::plot_grid(gg1, gg2, labels = "AUTO", rel_widths = c(1, 1.25))
+```
+
 ## Illustrative cluster heatmap
 
-```{r fig1, fig.width = 8, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
+```{r fig_heatmap, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
 par(bty = "n")
-
-data("pam50", package = "genefu")
-eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
-eset50 <- genefilter::featureFilter(eset50)
-featureNames(eset50) <- fData(eset50)$symbol
-
-## Derive relative expression
-exprs(eset50) <- sweep(exprs(eset50), 1, apply(exprs(eset50), 1, "median"))
 
 fData(eset50)$PAM50PROLIF <- fData(eset50)$entrezid %in% Nielsen10CCRTabS1$entrezid
 
@@ -116,7 +169,7 @@ The shape of the smoother indicates the form of an association between the index
 Mathematically, the excess distant metastases are martingale residuals in a null Cox model. 
 Corresponding plots for PAM50 intrinsic subtypes are added for comparison.
 
-```{r fig2, fig.cap = "Figure. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
+```{r fig_excessdm1, fig.cap = "Figure. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) + 
@@ -135,7 +188,7 @@ gg2 <- ggplot(data = pData(mainz), aes(x = subtypecd, y = excessdm)) +
 cowplot::plot_grid(gg1, gg2, labels = "AUTO", nrow = 1)
 ```
 
-```{r fig3, fig.width = 9, fig.height = 6, fig.cap = "Figure. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
+```{r fig_km, fig.width = 9, fig.height = 6, fig.cap = "Figure. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
 layout(matrix(1:2, nrow = 1, byrow = TRUE))
 par(bty = "n")
 
@@ -158,7 +211,7 @@ title(main = "B", adj = 0)
 
 See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by Ades et al. [@Ades2014]
 
-```{r fig4, fig.height = 10, fig.cap = "Figure. Proliferation, intrinsic subtypes and outcome."}
+```{r fig_excessdm2, fig.height = 10, fig.cap = "Figure. Proliferation, intrinsic subtypes and outcome."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) + 
@@ -198,7 +251,7 @@ One should judge a candidate biomarker by its ability to improve prognostic/pred
 
 Initial exploratory plots:
 
-```{r fig5, fig.height = 8, fig.cap = "Figure. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+```{r fig_excessdm3, fig.height = 8, fig.cap = "Figure. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(
@@ -296,7 +349,7 @@ lr_test_df <- rbind(
     as.data.frame(anova(model2b, model3b)[2, 2:4]))) 
 ```
 
-```{r fig6, fig.cap = "Figure. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
+```{r fig_cidx, fig.cap = "Figure. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
 colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
 
