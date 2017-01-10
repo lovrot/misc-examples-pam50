@@ -58,6 +58,23 @@ Gene-expression and clinical-pathological data was retrieved from the Gene Expre
 
 # Initial data explorations
 
+```{r}
+eset <- genefilter::nsFilter(mainz)$eset
+
+## Gene-center data using the median
+exprs(eset) <- sweep(exprs(eset), 1, apply(exprs(eset), 1, "median"))
+```
+
+```{r}
+data("pam50", package = "genefu")
+eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
+eset50 <- genefilter::featureFilter(eset50)
+featureNames(eset50) <- fData(eset50)$symbol
+
+## Gene-center data using the median
+exprs(eset50) <- sweep(exprs(eset50), 1, apply(exprs(eset50), 1, "median"))
+```
+
 ## Clinical-pathological characteristics
 
 ```{r tab1}
@@ -69,18 +86,54 @@ out <- knitr::kable(summary(tmp_df,  digits = 2),
 gsub('NA', '  ', out)
 ```
 
+## t-SNE plots
+
+t-distributed stochastic neighbour embedding (t-SNE) plots.
+
+```{r}
+set.seed(20101216)
+x <- t(exprs(eset))
+d <- dist_cor(x, method = "spearman")
+tsne_mainz <- Rtsne(d, theta = 0)
+## theta = 0: exact t-SNE
+## perplexity: "This value effectively controls how many nearest neighbours are taken into account when constructing the embedding in the low-dimensional space"
+
+eset$tsne1 <- tsne_mainz$Y[, 1]
+eset$tsne2 <- tsne_mainz$Y[, 2]
+```
+
+```{r}
+set.seed(20101216)
+x <- t(exprs(eset50))
+d <- dist_cor(x, method = "spearman")
+tsne_mainz50 <- Rtsne(d, theta = 0)
+
+eset50$tsne1 <- tsne_mainz50$Y[, 1]
+eset50$tsne2 <- tsne_mainz50$Y[, 2]
+```
+
+```{r, fig.height = 4.5, fig.cap = "Figure. t-SNE plots with median-centered data and using one minus Spearman correlation distance metric. (A) After non-specific gene-filtering, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
+gg1 <- ggplot(data = pData(eset), 
+  aes(x = tsne1, y = tsne2, col = subtypecd)) +
+  geom_point() +
+  scale_colour_manual(values = colCGANsubtypecd, guide = FALSE) +
+  coord_equal() +
+  labs(x = "t-SNE 1", y = "t-SNE 2")
+
+gg2 <- ggplot(data = pData(eset50), 
+  aes(x = tsne1, y = tsne2, col = subtypecd)) +
+  geom_point() +
+  scale_colour_manual(values = colCGANsubtypecd) +
+  coord_equal() +
+  labs(x = "t-SNE 1", y = "t-SNE 2", col = "Subtype")
+
+cowplot::plot_grid(gg1, gg2, labels = "AUTO", rel_widths = c(1, 1.25))
+```
+
 ## Illustrative cluster heatmap
 
-```{r fig1, fig.width = 8, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
+```{r fig1, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
 par(bty = "n")
-
-data("pam50", package = "genefu")
-eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
-eset50 <- genefilter::featureFilter(eset50)
-featureNames(eset50) <- fData(eset50)$symbol
-
-## Derive relative expression
-exprs(eset50) <- sweep(exprs(eset50), 1, apply(exprs(eset50), 1, "median"))
 
 fData(eset50)$PAM50PROLIF <- fData(eset50)$entrezid %in% Nielsen10CCRTabS1$entrezid
 
