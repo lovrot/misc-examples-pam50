@@ -4,13 +4,15 @@ author: "John Lövrot"
 license: "CC BY 4.0"
 date: "`r format(Sys.Date(), format = '%B %d, %Y')`"
 output: 
-  tufte::tufte_html: 
+  html_document:
+    theme: cosmo
     toc: true
+    toc_float: true
     fig_width: 8
     fig_height: 4
-link-citations: yes
-bibliography: bibliography.bib
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
+# link-citations: yes
+# bibliography: bibliography.bib
+# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
 ---
 
 ```{r setup, include = FALSE}
@@ -27,8 +29,9 @@ setwd("reports")
 ```
 
 ```{r settings}
-#ggplot2::theme_set(ggthemes::theme_tufte())
-ggplot2::theme_set(theme_classic(base_family = "serif"))
+ggplot2::theme_set(theme_classic() +
+    theme(axis.line.x = element_blank()) + 
+    theme(axis.line.y = element_blank()))
 
 col4 <- rev(RColorBrewer::brewer.pal(4, "RdYlBu"))
 names(col4) <- paste0("Q", 1:4)
@@ -47,27 +50,29 @@ mainz$trigrp <- with(pData(mainz), factor(
 The aim of these analysis notes is to give a basic introduction to PAM50 intrinsic subtypes and risk of reccurence score [@Parker2009] using a published breast cancer dataset. 
 These notes are generated using an R code bundle available at [github](http://github.com/lovrot/misc-examples-pam50), and the aim of this bundle is also to show how one can use the [ProjectTemplate](http://projecttemplate.net/) framework for a data analysis project. 
 
-# Initial data explorations
-
-## The Mainz dataset
+# The Mainz dataset
 
 In these notes, we use the Mainz cohort [@Schmidt2008] of primary breast cancer patients. It is a population based cohort. Lymph node negative disease, no adjuvant therapy.
 
 Gene-expression and clinical-pathological data was retrieved from the Gene Expression Omnibus (GEO) at NCBI (accession [GSE11121](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc = GSE11121)) using the R/Bioconductor package [GEOquery](http://bioconductor.org/packages/GEOquery/). Additionally, the oestrogen receptor status was retrieve from the R/Bioconductor data package [breastCancerMAINZ](http://bioconductor.org/packages/breastCancerMAINZ/).
 
-```{r}
+# Initial data explorations
+
+## Clinical-pathological characteristics
+
+```{r tab1}
 ## Adopted from http://stackoverflow.com/a/29953844
 tmp_df <- pData(mainz)[, c("tumsize", "lnstat", "erstat", "histgr", "subtypecd")]
 names(tmp_df) <- c("Tumour size (cm)", "Nodal status", "ER status", "Tumour grade", "Intrinsic subtype")
 out <- knitr::kable(summary(tmp_df,  digits = 2), 
-  caption = "Table 1. Clinial-pathological characteristics of the Mainz cohort. ER: Oestrogen receptor; LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like.")
+  caption = "Table. Clinial-pathological characteristics of the Mainz cohort. ER: Oestrogen receptor; LA: Luminal A; LB: Luminal B; H2: HER2-enriched; LB: Basal-like; NBL: Normal breast-like.")
 gsub('NA', '  ', out)
 ```
 
 ## Illustrative cluster heatmap
 
-```{r, fig.width = 8, fig.height = 9, fig.cap = "Figure 1. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
-par(bg = "transparent", bty = "n", family = "serif")
+```{r fig1, fig.width = 8, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
+par(bty = "n")
 
 data("pam50", package = "genefu")
 eset50 <- mainz[fData(mainz)$entrezid %in% pam50$centroids.map$EntrezGene.ID, ]
@@ -96,7 +101,7 @@ fig <- annHeatmap2(
   col = cyanblackyellow,
   legend = TRUE, 
   scale = "none")
-plot(fig, widths = c(1, 5, 0.5), heights = c(1.5, 5, 2))
+plot(fig, widths = c(0.75, 5, 0.5), heights = c(1.5, 5, 2))
 ```
 
 # Assocations with outcome
@@ -111,7 +116,7 @@ The shape of the smoother indicates the form of an association between the index
 Mathematically, the excess distant metastases are martingale residuals in a null Cox model. 
 Corresponding plots for PAM50 intrinsic subtypes are added for comparison.
 
-```{r, fig.cap = "Figure 2. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
+```{r fig2, fig.cap = "Figure. Excess distant metastases in relation to PAM50 (A) intrinsic subtype and (B) proliferation index."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) + 
@@ -130,9 +135,9 @@ gg2 <- ggplot(data = pData(mainz), aes(x = subtypecd, y = excessdm)) +
 cowplot::plot_grid(gg1, gg2, labels = "AUTO", nrow = 1)
 ```
 
-```{r, fig.width = 9, fig.height = 6, fig.cap = "Figure 3. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
+```{r fig3, fig.width = 9, fig.height = 6, fig.cap = "Figure. Corresponding Kaplan-Meier curves. The PAM50 proliferation index is categorised into quarters."}
 layout(matrix(1:2, nrow = 1, byrow = TRUE))
-par(bg = "transparent", bty = "n", family = "serif")
+par(bty = "n")
 
 survplot(Surv(survdmtm/365.25*12, dmstat) ~ cat4(PAM50PROLIF), 
   data = pData(mainz), 
@@ -153,7 +158,7 @@ title(main = "B", adj = 0)
 
 See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by Ades et al. [@Ades2014]
 
-```{r, fig.width = 15, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure 4. Proliferation, intrinsic subtype and outcome."}
+```{r fig4, fig.width = 15, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure. Proliferation, intrinsic subtype and outcome."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) + 
@@ -191,14 +196,14 @@ One should judge a candidate biomarker by its ability to improve prognostic/pred
 
 Initial exploratory plots:
 
-```{r, fig.height = 8, fig.cap = "Figure 5. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
+```{r fig5, fig.height = 8, fig.cap = "Figure. Excess distant metastases in relation to (upper row) Nottingham prognostic index and (lower row) PAM50 risk of reccurence score in (left column) ER+ patients and (right column) ER+/not H2 patients. NPI: Nottingham prognostic index (based on tumour size, lymph node status and histological grade); RORS: Risk of reccurence score (subtype alone)."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(
   data = subset(pData(mainz), erstat %in% "ER+"), 
   aes(x = NPI, y = excessdm)) + 
   geom_point(shape = 1) + 
-  geom_smooth(method = "loess", span = 1, col = "red") +
+  geom_smooth(method = "loess", span = 1, col = "darkred") +
   #facet_grid(. ~ erstat) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
@@ -207,7 +212,7 @@ gg2 <- ggplot(
   data = subset(pData(mainz), trigrp %in% "ER+/not H2"), 
   aes(x = NPI, y = excessdm)) + 
   geom_point(shape = 1) + 
-  geom_smooth(method = "loess", span = 1, col = "red") +
+  geom_smooth(method = "loess", span = 1, col = "darkred") +
   #facet_grid(. ~ trigrp) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
@@ -216,7 +221,7 @@ gg3 <- ggplot(
   data = subset(pData(mainz), erstat %in% "ER+"), 
   aes(x = RORS, y = excessdm)) + 
   geom_point(shape = 1) + 
-  geom_smooth(method = "loess", col = "red") +
+  geom_smooth(method = "loess", col = "darkred") +
   #facet_grid(. ~ erstat) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
@@ -225,7 +230,7 @@ gg4 <- ggplot(
   data = subset(pData(mainz), trigrp %in% "ER+/not H2"), 
   aes(x = RORS, y = excessdm)) + 
   geom_point(shape = 1) + 
-  geom_smooth(method = "loess", col = "red") +
+  geom_smooth(method = "loess", col = "darkred") +
   #facet_grid(. ~ trigrp) +
   ylim(ylim0) +
   labs(y = "Excess distant metastases")
@@ -289,7 +294,7 @@ lr_test_df <- rbind(
     as.data.frame(anova(model2b, model3b)[2, 2:4]))) 
 ```
 
-```{r, fig.cap = "Figure 6. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
+```{r fig6, fig.cap = "Figure. Concordance indices to assess the added value of ROR-S beyond standard clinical-pathological prognosticators as represented by the Nottingham prognostic index (NPI) in (A) ER+ patients and (B) ER+/not H2 patients."}
 colmarker <- colJCO[c("blue", "yellow", "red")]
 names(colmarker) <- c("NPI", "RORS", "NPI+RORS")
 
@@ -312,9 +317,9 @@ gg2 <- ggplot(data = subset(cindex_df, subpop  ==  "ER+/not H2"),
 cowplot::plot_grid(gg1, gg2, labels = "AUTO", nrow = 1)
 ```
 
-```{r}
+```{r tab2}
 knitr::kable(lr_test_df, digits = 3, row.names = FALSE, 
-  caption = "Table 2. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients. Corresponding tests to assess the added value of NPI beyond ROR-S is also included for comparison.")
+  caption = "Table. Likelihood ratio tests to assess the added value of ROR-S beyond NPI in the sub-populations ER+ patients and ER+/not H2 patients. Corresponding tests to assess the added value of NPI beyond ROR-S is also included for comparison.")
 ```
 
 # R session information
