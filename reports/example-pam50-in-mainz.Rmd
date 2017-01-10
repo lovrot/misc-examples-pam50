@@ -71,7 +71,7 @@ gsub('NA', '  ', out)
 
 ## Illustrative cluster heatmap
 
-```{r fig1, fig.width = 8, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric. PAM50PROLIF: PAM50 proliferation index."}
+```{r fig1, fig.width = 8, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
 par(bty = "n")
 
 data("pam50", package = "genefu")
