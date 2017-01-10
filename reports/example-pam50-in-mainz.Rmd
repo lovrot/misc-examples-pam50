@@ -158,7 +158,7 @@ title(main = "B", adj = 0)
 
 See, for example, section "Prognostic Signatures Within Intrinsic Subtypes" of the review by Ades et al. [@Ades2014]
 
-```{r fig4, fig.width = 15, fig.height = 8, fig.fullwidth = TRUE, fig.cap = "Figure. Proliferation, intrinsic subtype and outcome."}
+```{r fig4, fig.height = 10, fig.cap = "Figure. Proliferation, intrinsic subtypes and outcome."}
 ylim0 <- range(mainz$excessdm)
 
 gg1 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) + 
@@ -179,15 +179,17 @@ gg3 <- ggplot(data = pData(mainz), aes(x = PAM50PROLIF, y = excessdm)) +
   geom_point(shape = 1) + 
   geom_smooth(method = "lm", aes(col = subtypecd)) +
   ylim(ylim0) +
-  facet_wrap(~ subtype) +
+  facet_wrap(~ subtype, as.table = FALSE) +
   scale_colour_manual(values = colCGANsubtypecd, guide = FALSE) + 
   labs(x = "Proliferation index", y = "Excess distant metastases")
 
 cowplot::ggdraw() +
-  cowplot::draw_plot(gg1, 0, 1/2 + 0.05, 1/4 - 0.05, 1/2 - 0.05) +
-  cowplot::draw_plot(gg2, 0, 0, 1/4 - 0.05, 1/2 - 0.05) +
-  cowplot::draw_plot(gg3, 1/4 + 0.05, 0, 3/4 - 0.05, 1) +
-  cowplot::draw_plot_label(c("A", "B", "C"), x = c(0, 0, 1/4), y = c(1, 1/2, 1))
+  cowplot::draw_plot(gg1, 0, 2/3, 1/2, 1/3) +
+  cowplot::draw_plot(gg2, 1/2, 2/3, 1/2, 1/3) +
+  cowplot::draw_plot(gg3, 0, 0, 1, 2/3 - 0.05) +
+  cowplot::draw_plot_label(c("A", "B", "C"), 
+    x = c(0, 1/2, 0), y = c(1, 1, 2/3 - 0.05)) + 
+  NULL
 ```
 
 ## Added value of ROR score in ER+ patients
