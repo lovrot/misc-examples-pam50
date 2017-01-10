@@ -10,9 +10,9 @@ output:
     toc_float: true
     fig_width: 8
     fig_height: 4
-# link-citations: yes
-# bibliography: bibliography.bib
-# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
+link-citations: yes
+bibliography: bibliography.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
 ---
 
 ```{r setup, include = FALSE}
@@ -336,3 +336,7 @@ Copyright &copy; 2015-2016 by John Lövrot.
 This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).  
 The source code is available at [github.com/lovrot/misc-examples-pam50](http://github.com/lovrot/misc-examples-pam50).  
 Version `r format(read.dcf("../description.dcf")[1, "version"])`
+
+- - -
+
+# References
