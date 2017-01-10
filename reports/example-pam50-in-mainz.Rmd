@@ -59,7 +59,7 @@ Gene-expression and clinical-pathological data was retrieved from the Gene Expre
 # Initial data explorations
 
 ```{r}
-eset <- genefilter::nsFilter(mainz)$eset
+eset <- genefilter::nsFilter(mainz, var.cutoff = 0.8)$eset
 
 ## Gene-center data using the median
 exprs(eset) <- sweep(exprs(eset), 1, apply(exprs(eset), 1, "median"))
@@ -112,7 +112,7 @@ eset50$tsne1 <- tsne_mainz50$Y[, 1]
 eset50$tsne2 <- tsne_mainz50$Y[, 2]
 ```
 
-```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots with median-centered data and using one minus Spearman correlation distance metric. (A) After non-specific gene-filtering, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
+```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and one minus Spearman's correlation distance metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
 gg1 <- ggplot(data = pData(eset), 
   aes(x = tsne1, y = tsne2, col = subtypecd)) +
   geom_point() +
