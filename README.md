@@ -14,7 +14,7 @@ Make sure the packages listed in config/global.cdf and their dependencies are in
 Then
 
 1. Run src/cache-objects.R
-2. Knit reports/example-pam50-in-mainz.Rmd
+2. [Knit](http://yihui.name/knitr/) reports/example-pam50-in-mainz.Rmd
 
 A generated report can be viewed at [lovrot.github.io/misc-examples-pam50/](http://lovrot.github.io/misc-examples-pam50/).
 
