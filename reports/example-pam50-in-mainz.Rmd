@@ -12,7 +12,7 @@ output:
     fig_height: 4
 link-citations: yes
 bibliography: bibliography.bib
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/journal-of-clinical-oncology.csl
+csl: journal-of-the-national-cancer-institute.csl
 ---
 
 ```{r setup, include = FALSE}
