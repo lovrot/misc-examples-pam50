@@ -93,7 +93,7 @@ t-distributed stochastic neighbour embedding (t-SNE) plots.
 ```{r}
 set.seed(20101216)
 x <- t(exprs(eset))
-d <- dist_cor(x, method = "spearman")
+d <- dis_cor(x, method = "spearman")  # although, not strict distance metric
 tsne_mainz <- Rtsne(d, theta = 0)
 ## theta = 0: exact t-SNE
 ## perplexity: "This value effectively controls how many nearest neighbours are taken into account when constructing the embedding in the low-dimensional space"
@@ -105,14 +105,14 @@ eset$tsne2 <- tsne_mainz$Y[, 2]
 ```{r}
 set.seed(20101216)
 x <- t(exprs(eset50))
-d <- dist_cor(x, method = "spearman")
+d <- dis_cor(x, method = "spearman")
 tsne_mainz50 <- Rtsne(d, theta = 0)
 
 eset50$tsne1 <- tsne_mainz50$Y[, 1]
 eset50$tsne2 <- tsne_mainz50$Y[, 2]
 ```
 
-```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and one minus Spearman's correlation distance metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
+```{r fig_tsne, fig.height = 4.5, fig.cap = "Figure. t-SNE plots of median-centered data and using one minus Spearman's correlation dissimilarity metric. (A) After non-specific filtering keeping top 20\\% most varying genes, and (B) based on the fifty PAM50 genes. t-SNE: t-distributed stochastic neighbour embedding."}
 gg1 <- ggplot(data = pData(eset), 
   aes(x = tsne1, y = tsne2, col = subtypecd)) +
   geom_point() +
@@ -132,7 +132,7 @@ cowplot::plot_grid(gg1, gg2, labels = "AUTO", rel_widths = c(1, 1.25))
 
 ## Illustrative cluster heatmap
 
-```{r fig_heatmap, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation distance metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
+```{r fig_heatmap, fig.height = 9, fig.cap = "Figure. Semi-unsupervised clustering of the Mainz patients based on the PAM50 genes. Average-linkage hierarchical clustering using a one-minus-spearman rank correlation dissimilarity metric, after gene-centering using the median. Yellow: higher than median gene expression; black: median; blue: lower than median. PAM50PROLIF: PAM50 proliferation index."}
 par(bty = "n")
 
 fData(eset50)$PAM50PROLIF <- fData(eset50)$entrezid %in% Nielsen10CCRTabS1$entrezid
@@ -140,8 +140,8 @@ fData(eset50)$PAM50PROLIF <- fData(eset50)$entrezid %in% Nielsen10CCRTabS1$entre
 fig <- annHeatmap2(
   exprs(eset50),
   dendrogram = list(
-    Col = list(clustfun = hclust_avl, distfun = dist_cor, status = "yes", lwd = 1), 
-    Row = list(clustfun = hclust_avl, distfun = dist_cor, status = "hide")), 
+    Col = list(clustfun = hclust_avl, distfun = dis_cor, status = "yes", lwd = 1), 
+    Row = list(clustfun = hclust_avl, distfun = dis_cor, status = "hide")), 
   annotation = list(
     Col = list(data = pData(eset50)[, c("erstat", "PAM50PROLIF", "subtypecd")], 
       inclRef = TRUE), 
