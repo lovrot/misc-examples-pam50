@@ -1,6 +1,6 @@
 trimstr <- function(x) gsub("^\\s+|\\s+$", "", x)
 
-dist_cor <- function(x, method = "spearman") as.dist(1 - cor(t(x), method = method))
+dis_cor <- function(x, method = "spearman") as.dist(1 - cor(t(x), method = method))
 
 hclust_avl <- function(x) hclust(x, method = "average")
 
