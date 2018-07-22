@@ -35,5 +35,5 @@ A generated report can be viewed at [lovrot.github.io/misc-examples-pam50/](http
 
 - - -
 
-Copyright (c) 2015-2017 by John Lövrot.  
+Copyright (c) 2015-2018 by John Lövrot.  
 This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
