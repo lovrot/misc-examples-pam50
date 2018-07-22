@@ -20,7 +20,7 @@ install.packages("survplot_0.0.7.tar.gz",
 
 Furthermore, the packages ProjectTemplate, rmarkdown, knitr, Hmisc, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
 
-Then retrive, munge and cache all data: 
+Then retrieve, munge and cache all data: 
 ```
 source("src/cache-objects.R")
 ```
