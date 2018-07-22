@@ -3,7 +3,7 @@ description: The aims of this R code bundle are: (1) to show how one can use the
     ProjectTemplate framework for a data analysis project, and (2) to give a
     basic introduction to PAM50 intrinsic subtypes and risk of reccurence score
     using a published breast cancer dataset.
-version: 0.10.3
+version: 0.11.0
 author: John Lövrot
 license: CC BY 4.0
 url: http://github.com/lovrot/misc-examples-pam50
