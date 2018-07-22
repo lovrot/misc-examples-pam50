@@ -9,12 +9,27 @@ The aims of this R code bundle are: (1) to show how one can use the [ProjectTemp
 Instructions
 ------------
 
-Make sure the packages listed in config/global.cdf and their dependencies are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/. Furthermore, the packages ProjectTemplate, rmarkdown, knitr, Hmisc, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
+Make sure the packages listed in the project configuration `config/global.cdf` and their dependencies are installed. The package survplot can found at http://www.cbs.dtu.dk/~eklund/survplot/ and is prefarably installed from source:
+```
+download.file(
+  url="http://www.cbs.dtu.dk/%7Eeklund/survplot/survplot_0.0.7.tar.gz",
+  destfile="survplot_0.0.7.tar.gz")
+install.packages("survplot_0.0.7.tar.gz",
+  repos=NULL, type="source")
+```
 
-Then
+Furthermore, the packages ProjectTemplate, rmarkdown, knitr, Hmisc, gplot, RColorBrewer, cowplot, breastCancerMAINZ and genefu are also needed.
 
-1. Run src/cache-objects.R
-2. [Knit](http://yihui.name/knitr/) reports/example-pam50-in-mainz.Rmd
+Then retrive, munge and cache all data: 
+```
+source("src/cache-objects.R")
+```
+
+Finally, render the report:
+```
+rmarkdown::render("reports/example-pam50-in-mainz.Rmd")
+```
+If you’re using RStudio, you can also open the R Markdown file and hit the ”Knit” button, see also https://rmarkdown.rstudio.com/authoring_quick_tour.html#rendering_output
 
 A generated report can be viewed at [lovrot.github.io/misc-examples-pam50/](http://lovrot.github.io/misc-examples-pam50/).
 
